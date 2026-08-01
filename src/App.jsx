@@ -5,7 +5,7 @@ import {
   Route
 } from "react-router-dom";
 
-import Rankingcard from "./components/Rankingcard.jsx"; // ou le nom de ton fichier de classement
+import Rankingcard from "./components/RankingCard.jsx"; // ou le nom de ton fichier de classement
 import Home from "./pages/Home";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
@@ -29,7 +29,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/tournaments" element={<Tournaments />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/ranking" element={<Rankingcard />} />
+        <Route path="/ranking" element={<RankingCard />} />
         <Route path="/bracket" element={<Bracket />} />
         <Route path="/tournaments/:id/bracket" element={<Bracket />} />
         <Route path="/tournaments/:id" element={<TournamentDetails />} />
