@@ -5,7 +5,7 @@ import {
   Route
 } from "react-router-dom";
 
-import Rankingcard from "./components/RankingCard.jsx"; // ou le nom de ton fichier de classement
+import RankingCard from "./components/RankingCard.jsx";
 import Home from "./pages/Home";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
