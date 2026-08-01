@@ -1,0 +1,210 @@
+.tournament-card{
+
+    background:#1E293B;
+
+    color:white;
+
+    width:320px;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+
+}
+
+
+.tournament-card h2{
+
+    color:#2563EB;
+
+    margin-bottom:20px;
+
+}
+
+
+.tournament-card p{
+
+    margin:12px 0;
+
+    color:#CBD5E1;
+
+}
+
+
+.tournament-card strong{
+
+    color:white;
+
+}
+
+
+.tournament-card button{
+
+    margin-top:20px;
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#2563EB;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+
+.tournament-card button:hover{
+
+    background:#1D4ED8;
+
+}
+
+.participate-btn{
+
+display:block;
+
+text-align:center;
+
+margin-top:20px;
+
+padding:12px;
+
+background:#2563EB;
+
+color:white;
+
+text-decoration:none;
+
+border-radius:8px;
+
+}
+
+.bracket-btn{
+
+margin-top:10px;
+width:100%;
+padding:12px;
+
+background:#f59e0b;
+color:white;
+
+border:none;
+border-radius:10px;
+
+font-weight:bold;
+cursor:pointer;
+
+}
+
+
+.bracket-btn:hover{
+
+background:#d97706;
+
+}
+
+.tournament-title{
+
+cursor:pointer;
+transition:0.3s;
+
+}
+
+
+.tournament-title:hover{
+
+color:#f59e0b;
+transform:scale(1.05);
+
+}
+
+.details-btn{
+
+width:100%;
+padding:12px;
+margin-bottom:10px;
+
+background:#2563eb;
+color:white;
+
+border:none;
+border-radius:10px;
+
+font-weight:bold;
+cursor:pointer;
+
+}
+
+
+.details-btn:hover{
+
+background:#1d4ed8;
+
+}
+
+@media (max-width:768px){
+
+.tournament-card{
+
+    width:100%;
+    max-width:350px;
+
+    padding:20px;
+
+    margin:0 auto;
+
+}
+
+
+.tournament-card h2{
+
+    font-size:22px;
+
+    text-align:center;
+
+}
+
+
+.tournament-card p{
+
+    font-size:15px;
+
+}
+
+
+.tournament-card button{
+
+    font-size:15px;
+
+    padding:11px;
+
+}
+
+
+
+.details-btn,
+.participate-btn,
+.bracket-btn{
+
+    width:100%;
+
+}
+
+
+.tournament-title:hover{
+
+    transform:none;
+
+}
+
+}
