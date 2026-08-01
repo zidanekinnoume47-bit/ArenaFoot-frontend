@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import TournamentCard from "../components/TournamentCard";
 import RankingCard from "../components/RankingCard";
-import HowItWorks from "../components/Howitworks";
+import HowItWorks from "../components/HowItWorks";
 import Footer from "../components/Footer";
 
 
