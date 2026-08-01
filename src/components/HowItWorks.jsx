@@ -1,6 +1,6 @@
 import React from 'react';
 
-import "../styles/howItWorks.css";
+import "../styles/HowItWorks.css";
 
 
 function HowItWorks(){
