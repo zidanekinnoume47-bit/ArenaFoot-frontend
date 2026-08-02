@@ -2,9 +2,10 @@ import React from 'react';
 
 import {useEffect,useState} from "react";
 import {
-getPlayers,
-getTournaments
-} from "../service/adminService.js";
+    getPlayers,
+    getTournaments,
+    deleteTournament
+} from "../service/adminService";
 
 import Sidebar from "../components/admin/Sidebar";
 import DashboardCards from "../components/admin/DashboardCards";
@@ -19,11 +20,14 @@ const [tournaments,setTournaments]=useState([]);
 
 useEffect(() => {
 
+
+
+
     getPlayers().then(data => {
 
         console.log("PLAYERS :", data);
 
-        setPlayers(data);
+       setPlayers(Array.isArray(data) ? data : []);
 
     });
 
@@ -31,13 +35,25 @@ useEffect(() => {
 
         console.log("TOURNAMENTS :", data);
 
-        setTournaments(data);
+       setTournaments(Array.isArray(data) ? data : []);
 
     });
 
 }, []);
 
+const handleDeleteTournament = async (id) => {
 
+    if (!window.confirm("Supprimer ce tournoi ?")) return;
+
+    const data = await deleteTournament(id);
+
+    alert(data.message);
+
+    const list = await getTournaments();
+
+    setTournaments(list);
+
+};
 
 return(
 
@@ -62,19 +78,37 @@ return(
 
         <h2>Tournois</h2>
 
-        {
-            tournaments.map((t)=>(
-                <div key={t.id}>
+       {
+    tournaments.map((t) => (
+        <div
+            key={t.id}
+            style={{
+                border: "1px solid #ddd",
+                padding: "15px",
+                marginBottom: "15px",
+                borderRadius: "8px"
+            }}
+        >
 
-                    <h3>{t.name}</h3>
+            <h3>{t.name}</h3>
 
-                    <p>Participation : {t.entry_fee} FCFA</p>
+            <p>Participation : {t.entry_fee} FCFA</p>
 
-                    <p>Récompense : {t.reward} FCFA</p>
+            <p>Récompense : {t.reward} FCFA</p>
 
-                </div>
-            ))
-        }
+            <button>👥 Participants</button>
+
+            <button>🏆 Bracket</button>
+
+            <button>✏ Modifier</button>
+
+            <button onClick={() => handleDeleteTournament(t.id)}>
+                🗑 Supprimer
+            </button>
+
+        </div>
+    ))
+}
 
     </div>
 

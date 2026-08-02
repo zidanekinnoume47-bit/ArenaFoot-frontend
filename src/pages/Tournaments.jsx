@@ -9,8 +9,7 @@ function Tournaments() {
 
   useEffect(() => {
 
-    axios
-      .get("http://localhost:5000/api/tournaments")
+    axios.get("https://arenafoot-backend-production.up.railway.app/api/tournaments")
       .then((response) => {
 
         console.log("Tournois API :", response.data);

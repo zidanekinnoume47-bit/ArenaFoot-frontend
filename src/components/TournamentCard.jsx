@@ -64,13 +64,6 @@ function TournamentCard({ tournament }) {
 
 
 
-              await axios.post(
-        "https://arenafoot-backend-production.up.railway.app/api/tournaments/join",
-        {
-          tournament_id: tournament.id,
-          user_id: user.id
-        }
-        );
 
 
 
@@ -84,22 +77,14 @@ function TournamentCard({ tournament }) {
         "https://arenafoot-backend-production.up.railway.app/api/payments/create",
 
         {
-
-          player_id: user.id,
-
-          tournament_id: tournament.id,
-
-          amount: tournament.entry_fee,
-
-          method: "mobile_money",
-
-
-          firstname: user.pseudo || "Joueur",
-
-          lastname: "ArenaFoot",
-
-          email: user.email || "client@arenafoot.com"
-
+            player_id: user.id,
+            user_id: user.id,
+            tournament_id: tournament.id,
+            amount: tournament.entry_fee,
+            method: "mobile_money",
+            firstname: user.pseudo || "Joueur",
+            lastname: "ArenaFoot",
+            email: user.email || "client@arenafoot.com"
         }
 
       );

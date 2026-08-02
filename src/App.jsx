@@ -18,6 +18,7 @@ import Bracket from "./pages/Bracket";
 import TournamentDetails from "./pages/TournamentDetails.jsx";
 import Profile from "./pages/Profile.jsx";
 import AdminPlayers from "./pages/AdminPlayers";
+import AdminTournaments from "./pages/AdminTournaments";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/room/:id" element={<Room/>} />
         <Route path="/admin/players" element={<AdminPlayers />} />
+        <Route path="/admin/tournaments" element={<AdminTournaments />} />
       </Routes>
     </BrowserRouter>
   );

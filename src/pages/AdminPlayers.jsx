@@ -1,15 +1,66 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/admin/Sidebar";
-import { getPlayers } from "../service/adminService";
+import {
+    getPlayers,
+    getPlayer,
+    banPlayer,
+    deletePlayer
+} from "../service/adminService";
 import "../styles/admin.css";
+
 
 function AdminPlayers() {
 
     const [players, setPlayers] = useState([]);
 
+    const [search, setSearch] = useState("");
+
     useEffect(() => {
-        getPlayers().then(data => setPlayers(data));
-    }, []);
+    getPlayers().then(data => {
+        console.log("PLAYERS :", data);
+        setPlayers(data);
+    });
+}, []);
+
+
+
+    
+   const handleView = async (id) => {
+
+    console.log("ID :", id);
+
+    const player = await getPlayer(id);
+
+    console.log(player);
+
+};
+
+
+
+const handleBan = async (id) => {
+
+    if (!window.confirm("Bannir ce joueur ?")) return;
+
+    const data = await banPlayer(id);
+
+    alert(data.message);
+
+    getPlayers().then(data => setPlayers(data));
+
+};
+
+const handleDelete = async (id) => {
+
+    if (!window.confirm("Supprimer définitivement ce joueur ?")) return;
+
+    const data = await deletePlayer(id);
+
+    alert(data.message);
+
+    getPlayers().then(data => setPlayers(data));
+
+};
+
 
     return (
 
@@ -17,9 +68,19 @@ function AdminPlayers() {
 
             <Sidebar />
 
+            
+
             <div className="admin-content">
 
                 <h1>👥 Gestion des joueurs</h1>
+
+                <input
+                    type="text"
+                    placeholder="Rechercher un joueur..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="admin-search"
+                />
 
                 <table className="admin-table">
 
@@ -37,7 +98,13 @@ function AdminPlayers() {
                     <tbody>
 
                         {
-                            players.map(player => (
+                            players
+                        .filter(player =>
+                            player.name?.toLowerCase().includes(search.toLowerCase()) ||
+                            player.pseudo?.toLowerCase().includes(search.toLowerCase()) ||
+                            player.email?.toLowerCase().includes(search.toLowerCase())
+                        )
+                        .map(player => (
 
                                 <tr key={player.id}>
 
@@ -49,13 +116,19 @@ function AdminPlayers() {
 
                                     <td>
 
-                                        <button>👁 Voir</button>
+                                        <button onClick={() => handleView(player.id)}>
+                                            👁 Voir
+                                        </button>
 
                                         <button>✏ Modifier</button>
 
-                                        <button>🚫 Bannir</button>
+                                        <button onClick={() => handleBan(player.id)}>
+                                            🚫 Bannir
+                                        </button>
 
-                                        <button>🗑 Supprimer</button>
+                                        <button onClick={() => handleDelete(player.id)}>
+                                            🗑 Supprimer
+                                        </button>
 
                                     </td>
 
@@ -73,6 +146,7 @@ function AdminPlayers() {
         </div>
 
     );
+
 
 }
 
