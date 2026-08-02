@@ -17,6 +17,7 @@ import Payment from "./pages/Payment.jsx";
 import Bracket from "./pages/Bracket";
 import TournamentDetails from "./pages/TournamentDetails.jsx";
 import Profile from "./pages/Profile.jsx";
+import AdminPlayers from "./pages/AdminPlayers";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/tournaments/:id" element={<TournamentDetails />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/room/:id" element={<Room/>} />
+        <Route path="/admin/players" element={<AdminPlayers />} />
       </Routes>
     </BrowserRouter>
   );
