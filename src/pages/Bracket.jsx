@@ -46,29 +46,27 @@ alert("Erreur validation match");
 
 
 
-useEffect(()=>{
-
+useEffect(() => {
 
 axios.get(
-"https://arenafoot-backend-production.up.railway.app/api/tournaments"
+`https://arenafoot-backend-production.up.railway.app/api/matches/bracket/${id}`
 )
 
-.then(res=>{
+.then(res => {
 
-console.log("MATCHS API :",res.data);
+console.log("BRACKET API :", res.data);
 
 setMatches(res.data);
 
 })
 
-.catch(err=>{
+.catch(err => {
 
 console.log(err);
 
 });
 
-
-},[id]);
+}, [id]);
 
 
 
