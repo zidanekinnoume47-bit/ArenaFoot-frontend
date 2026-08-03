@@ -12,7 +12,7 @@ await fetch(
 `${API}/players`,
 {
 headers:{
-Authorization: token
+Authorization: `Bearer ${token}`
 }
 }
 );
@@ -39,7 +39,7 @@ await fetch(
 `${API}/tournaments`,
 {
 headers:{
-Authorization: token
+Authorization: `Bearer ${token}`
 }
 }
 );
@@ -61,7 +61,7 @@ export const getPlayer = async (id) => {
         `${API}/player/${id}`,
         {
             headers: {
-                Authorization: token
+                Authorization: `Bearer ${token}`
             }
         }
     );
@@ -81,7 +81,7 @@ export const banPlayer = async (id) => {
         {
             method: "PUT",
             headers: {
-                Authorization: token
+                Authorization: `Bearer ${token}`
             }
         }
     );
@@ -101,7 +101,7 @@ export const deletePlayer = async (id) => {
         {
             method: "DELETE",
             headers: {
-                Authorization: token
+                Authorization: `Bearer ${token}`
             }
         }
     );
@@ -121,7 +121,24 @@ export const deleteTournament = async (id) => {
         {
             method: "DELETE",
             headers: {
-                Authorization: token
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return await response.json();
+
+};
+
+export const getRewards = async () => {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${API}/rewards`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
         }
     );
@@ -131,6 +148,24 @@ export const deleteTournament = async (id) => {
 };
 
 
+export const sendReward = async (id) => {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${API}/reward/${id}`,
+        {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return await response.json();
+
+};
+
 export const getTournamentPlayers = async (id) => {
 
     const token = localStorage.getItem("token");
@@ -139,7 +174,7 @@ export const getTournamentPlayers = async (id) => {
         `${API}/tournament/${id}/players`,
         {
             headers: {
-                Authorization: token
+                Authorization: `Bearer ${token}`
             }
         }
     );

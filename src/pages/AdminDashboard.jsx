@@ -4,7 +4,9 @@ import {useEffect,useState} from "react";
 import {
     getPlayers,
     getTournaments,
-    deleteTournament
+    deleteTournament,
+    getRewards,
+    sendReward
 } from "../service/adminService";
 
 import Sidebar from "../components/admin/Sidebar";
@@ -17,10 +19,18 @@ const [players,setPlayers]=useState([]);
 
 const [tournaments,setTournaments]=useState([]);
 
+const [rewards, setRewards] = useState([]);
+
 
 useEffect(() => {
 
+    getRewards().then(data => {
 
+    console.log("REWARDS :", data);
+
+    setRewards(Array.isArray(data) ? data : []);
+
+    });
 
 
     getPlayers().then(data => {
@@ -52,6 +62,19 @@ const handleDeleteTournament = async (id) => {
     const list = await getTournaments();
 
     setTournaments(list);
+
+};
+
+
+const handleSendReward = async (id) => {
+
+    const data = await sendReward(id);
+
+    alert(data.message);
+
+    const list = await getRewards();
+
+    setRewards(list);
 
 };
 
@@ -107,6 +130,46 @@ return(
             </button>
 
         </div>
+    ))
+}<h2>🏆 Récompenses</h2>
+
+{
+    rewards.map((reward) => (
+
+        <div
+            key={reward.id}
+            style={{
+                border: "1px solid #ddd",
+                padding: "15px",
+                marginBottom: "10px",
+                borderRadius: "8px"
+            }}
+        >
+
+            <p>👤 {reward.pseudo}</p>
+
+            <p>🏆 {reward.tournament}</p>
+
+            <p>💰 {reward.amount} FCFA</p>
+
+            <p>📱 {reward.phone}</p>
+
+            <p>📌 {reward.status}</p>
+
+            {
+                reward.status === "waiting" && (
+
+                    <button
+                        onClick={() => handleSendReward(reward.id)}
+                    >
+                        📤 Envoyer
+                    </button>
+
+                )
+            }
+
+        </div>
+
     ))
 }
 
