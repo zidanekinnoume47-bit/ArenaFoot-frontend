@@ -20,7 +20,7 @@ const finishMatch = async(matchId, winnerId)=>{
 
 try{
 
-await axios.put(
+await axios.post(
 `${API}/api/matches/finish`,
 {
 match_id: matchId,
