@@ -253,52 +253,22 @@ match={match}
 
 {
 
-rounds["Finale"].map(match=>(
+<div className="round finale">
 
-<div className="match champion" key={match.id}>
+<h2>Finale 🏆</h2>
 
-
-<h3>
-🏆 Champion
-</h3>
-
-
-<p>
-👑
 {
-match.winner == match.player_one
-?
-match.player_one_name
-:
-match.player_two_name
-}
-</p>
+rounds["Finale"].map(match => (
 
-
-<span>
-{match.score || "VS"}
-</span>
-
-
-<p>
-
-{match.player_one_name || "À déterminer"}
-
-<br/>
-
-VS
-
-<br/>
-
-{match.player_two_name || "À déterminer"}
-
-</p>
-
-
-</div>
-
+<MatchCard
+key={match.id}
+match={match}
+/>
 
 ))
+}
+
+</div>
 
 }
 
