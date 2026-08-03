@@ -1,43 +1,165 @@
 import React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "../styles/payment.css";
 
 function Payment() {
-  const navigate = useNavigate();
 
-  const handlePayment = async () => {
-    try {
-      // Tu pourras ajouter ton appel axios.post pour enregistrer le paiement ici si besoin
-      alert("Paiement confirmé avec succès !");
-      navigate("/dashboard");
-    } catch (error) {
-      alert("Erreur lors du paiement");
+    const location = useLocation();
+
+    const tournament = location.state?.tournament;
+    
+
+    const storedUser = localStorage.getItem("user");
+
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+    console.log(user);
+
+    if (!tournament) {
+
+        return (
+            <div className="payment-page">
+                <div className="payment-box">
+                    <h2>Aucun tournoi sélectionné.</h2>
+                </div>
+            </div>
+        );
+
     }
-  };
 
-  return (
-    <div className="payment-page">
-      <div className="payment-box">
-        <h1>💳 Paiement ArenaFoot</h1>
+    const handlePayment = async () => {
 
-        <p>Tournoi : Ligue ArenaFoot</p>
-        <p>
-          Montant à payer : <strong>5 000 FCFA</strong>
-        </p>
+        try {
 
-        <h3>Choisir un moyen de paiement</h3>
+            if (!user) {
 
-        <button>📱 Mobile Money</button>
-        <button>💳 Carte bancaire</button>
-        <button>₿ Crypto</button>
+                alert("Vous devez être connecté.");
 
-        <button className="confirm" onClick={handlePayment}>
-          Confirmer la participation
-        </button>
-      </div>
-    </div>
-  );
+                return;
+
+            }
+
+            console.log({
+    player_id: user.id,
+    user_id: user.id,
+    tournament_id: tournament.id,
+    amount: tournament.entry_fee,
+    firstname: user.pseudo,
+    lastname: "ArenaFoot",
+    email: user.email
+});
+
+            const response = await axios.post(
+                "https://arenafoot-backend-production.up.railway.app/api/payments/create",
+                {
+
+                    player_id: user.id,
+                    user_id: user.id,
+
+                    tournament_id: tournament.id,
+
+                    amount: tournament.entry_fee,
+
+                    method: "mobile_money",
+
+                    firstname: user.pseudo || "Joueur",
+
+                    lastname: "ArenaFoot",
+
+                    email: user.email
+
+                }
+            );
+
+            localStorage.setItem(
+                "payment_id",
+                response.data.payment_id
+            );
+
+            if (response.data.payment_url) {
+
+                window.location.href =
+                    response.data.payment_url;
+
+            } else {
+
+                alert("Lien de paiement introuvable.");
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+            alert(
+                error.response?.data?.message ||
+                "Erreur création paiement."
+            );
+
+        }
+
+    };
+
+    return (
+
+        <div className="payment-page">
+
+            <div className="payment-box">
+
+                <h1>💳 Paiement ArenaFoot</h1>
+
+                <h2>{tournament.name}</h2>
+
+                <p>
+
+                    Participation :
+
+                    <strong>
+
+                        {" "}
+                        {tournament.entry_fee} FCFA
+
+                    </strong>
+
+                </p>
+
+                <p>
+
+                    Récompense :
+
+                    <strong>
+
+                        {" "}
+                        {tournament.reward} FCFA
+
+                    </strong>
+
+                </p>
+
+                <h3>Moyen de paiement</h3>
+
+                <button disabled>
+
+                    📱 Mobile Money (FedaPay)
+
+                </button>
+
+                <button
+                    className="confirm"
+                    onClick={handlePayment}
+                >
+
+                    Payer maintenant
+
+                </button>
+
+            </div>
+
+        </div>
+
+    );
+
 }
 
 export default Payment;
