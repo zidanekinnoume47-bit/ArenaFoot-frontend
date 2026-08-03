@@ -50,6 +50,19 @@ function Payment() {
     email: user.email
 });
 
+// Inscrire le joueur au tournoi
+
+await axios.post(
+"https://arenafoot-backend-production.up.railway.app/api/tournaments/join",
+{
+    tournament_id: tournament.id,
+    user_id: user.id,
+    player_id: user.id
+}
+);
+
+
+
             const response = await axios.post(
                 "https://arenafoot-backend-production.up.railway.app/api/payments/create",
                 {
