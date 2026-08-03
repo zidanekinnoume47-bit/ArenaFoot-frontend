@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams, useNavigate} from "react-router-dom";
 import "../styles/tournamentDetails.css";
-
+const API = import.meta.env.VITE_API_URL;
 
 function TournamentDetails(){
 console.log("TournamentDetails chargé");
@@ -72,7 +72,7 @@ console.log("Erreur tournoi :", err);
 
 // Charger les participants
 
-axios.get(`${API}/tournaments/${id}/players`)
+axios.get(`${API}/api/tournaments/${id}/players`)
 
 .then(res=>{
 
