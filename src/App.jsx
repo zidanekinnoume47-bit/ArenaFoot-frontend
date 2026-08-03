@@ -19,6 +19,8 @@ import TournamentDetails from "./pages/TournamentDetails.jsx";
 import Profile from "./pages/Profile.jsx";
 import AdminPlayers from "./pages/AdminPlayers";
 import AdminTournaments from "./pages/AdminTournaments";
+import AdminRewards from "./pages/AdminRewards";
+
 
 function App() {
   return (
@@ -39,6 +41,7 @@ function App() {
         <Route path="/room/:id" element={<Room/>} />
         <Route path="/admin/players" element={<AdminPlayers />} />
         <Route path="/admin/tournaments" element={<AdminTournaments />} />
+        <Route path="/admin/rewards" element={<AdminRewards />} />
       </Routes>
     </BrowserRouter>
   );
