@@ -8,6 +8,7 @@ import TournamentCard from "../components/TournamentCard";
 import RankingCard from "../components/RankingCard";
 import HowItWorks from "../components/HowItWorks";
 import Footer from "../components/Footer";
+const API = import.meta.env.VITE_API_URL;
 
 
 function Home(){
@@ -18,7 +19,7 @@ function Home(){
   useEffect(()=>{
 
     axios.get(
-      "https://arenafoot-backend-production.up.railway.app/api/tournaments"
+      `${API}/api/tournaments`
     )
 
     .then(response=>{

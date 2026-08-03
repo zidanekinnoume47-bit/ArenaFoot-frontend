@@ -24,7 +24,7 @@ useEffect(()=>{
 // Charger le tournoi
 
 axios.get(
-`http://localhost:5000/api/tournaments/${id}`
+`${API}/api/tournaments/${id}`
 )
 
 .then(res=>{
@@ -39,7 +39,7 @@ setTournament(res.data);
 if(res.data.winner_id){
 
 axios.get(
-`https://arenafoot-backend-production.up.railway.app/api/users/${res.data.winner_id}`
+`${API}/api/users/${res.data.winner_id}`
 )
 
 .then(response=>{
@@ -72,9 +72,7 @@ console.log("Erreur tournoi :", err);
 
 // Charger les participants
 
-axios.get(
-`https://arenafoot-backend-production.up.railway.app/api/tournaments/${id}/players`
-)
+axios.get(`${API}/tournaments/${id}/players`)
 
 .then(res=>{
 

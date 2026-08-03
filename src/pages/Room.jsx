@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../styles/room.css";
+const API = import.meta.env.VITE_API_URL;
 
 
 function Room(){
@@ -21,7 +22,7 @@ useEffect(()=>{
 
 
 axios.get(
-`https://arenafoot-backend-production.up.railway.app/api/rooms/${id}`
+`${API}/api/rooms/${id}`
 )
 
 .then(response=>{
@@ -99,7 +100,7 @@ try{
 
 await axios.put(
 
-"https://arenafoot-backend-production.up.railway.app/api/matches/finish",
+`${API}/api/matches/finish`,
 
 {
 

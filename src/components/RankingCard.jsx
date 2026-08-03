@@ -2,6 +2,7 @@ import React,{useEffect,useState} from "react";
 import axios from "axios";
 
 import "../styles/ranking.css";
+const API = import.meta.env.VITE_API_URL;
 
 
 function RankingCard(){
@@ -12,7 +13,7 @@ const [players,setPlayers] = useState([]);
 useEffect(()=>{
 
 axios.get(
-"https://arenafoot-backend-production.up.railway.app/api/users/ranking"
+`${API}/api/users/ranking`
 )
 
 .then(res=>{

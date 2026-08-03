@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TournamentCard from "../components/TournamentCard";
 import "../styles/tournaments.css";
+const API = import.meta.env.VITE_API_URL;
 
 function Tournaments() {
 
@@ -9,7 +10,7 @@ function Tournaments() {
 
   useEffect(() => {
 
-    axios.get("https://arenafoot-backend-production.up.railway.app/api/tournaments")
+    axios.get(`${API}/api/tournaments`)
       .then((response) => {
 
         console.log("Tournois API :", response.data);

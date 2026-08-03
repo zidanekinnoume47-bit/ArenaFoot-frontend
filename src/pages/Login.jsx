@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/login.css";
+const API = import.meta.env.VITE_API_URL;
 
 
 function Login(){
@@ -37,7 +38,7 @@ try{
 const response = await 
 axios.post(
 
-"https://arenafoot-backend-production.up.railway.app/api/users/login",
+`${API}/api/users/login`,
 
 formData
 

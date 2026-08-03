@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/dashboard.css";
+const API = import.meta.env.VITE_API_URL;
 
 
 function Dashboard(){
@@ -34,7 +35,7 @@ const addRoomCode = async()=>{
 try{
 
 await axios.put(
-"https://arenafoot-backend-production.up.railway.app/api/rooms/code",
+`${API}/api/rooms/code`,
 {
 room_id: room.id,
 room_code: roomCode
@@ -67,7 +68,7 @@ return;
 try{
 
 await axios.post(
-"https://arenafoot-backend-production.up.railway.app/api/rooms/create",
+`${API}/api/rooms/create`,
 {
 match_id: nextMatch.id,
 host_player: nextMatch.player_one,
@@ -112,7 +113,7 @@ const paymentId = localStorage.getItem("payment_id");
 if (status === "approved" && paymentId) {
 
     axios.post(
-        "https://arenafoot-backend-production.up.railway.app/api/payments/validate",
+        `${API}/api/payments/validate`,
         {
             payment_id: paymentId
         }
@@ -142,7 +143,7 @@ if (status === "approved" && paymentId) {
 // Mes tournois
 
 axios.get(
-`https://arenafoot-backend-production.up.railway.app/api/tournaments/player/${user.id}`
+`${API}/api/tournaments/player/${user.id}`
 )
 
 .then(response=>{
@@ -166,7 +167,7 @@ console.log(error);
 // Tournois disponibles
 
 axios.get(
-"https://arenafoot-backend-production.up.railway.app/api/tournaments"
+`${API}/api/tournaments`
 )
 
 .then(response=>{
@@ -199,7 +200,7 @@ console.log(error);
 
 axios.get(
 
-`https://arenafoot-backend-production.up.railway.app/api/matches/player/${user.id}/next`
+`${API}/api/matches/player/${user.id}/next`
 
 )
 
@@ -219,7 +220,7 @@ setNextMatch(response.data);
 if(response.data){
 
 axios.get(
-`https://arenafoot-backend-production.up.railway.app/api/rooms/${response.data.id}`
+`${API}/api/rooms/${response.data.id}`
 )
 
 .then(roomResponse=>{
@@ -267,7 +268,7 @@ error
 
 axios.get(
 
-`https://arenafoot-backend-production.up.railway.app/api/users/profile/${user.id}`
+`${API}/api/users/profile/${user.id}`
 
 )
 

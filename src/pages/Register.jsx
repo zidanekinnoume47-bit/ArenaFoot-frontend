@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/register.css";
+const API = import.meta.env.VITE_API_URL;
 
 function Register() {
 
@@ -40,7 +41,7 @@ function Register() {
 
       const response = await axios.post(
 
-        "https://arenafoot-backend-production.up.railway.app/api/users/register",
+        `${API}/api/users/register`,
         
         formData
 

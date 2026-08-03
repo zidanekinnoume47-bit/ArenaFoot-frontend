@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../styles/bracket.css";
+const API = import.meta.env.VITE_API_URL;
 
 
 function Bracket(){
@@ -20,7 +21,7 @@ const finishMatch = async(matchId, winnerId)=>{
 try{
 
 await axios.put(
-"http://localhost:5000/api/matches/finish",
+`${API}/api/matches/finish`,
 {
 match_id: matchId,
 winner: winnerId,
@@ -49,7 +50,7 @@ alert("Erreur validation match");
 useEffect(() => {
     
 axios.get(
-`http://localhost:5000/api/matches/bracket/${id}`
+`${API}/api/matches/bracket/${id}`
 )
 
 .then(res => {

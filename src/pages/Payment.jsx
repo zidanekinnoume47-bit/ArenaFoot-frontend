@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import "../styles/payment.css";
+const API = import.meta.env.VITE_API_URL;
 
 function Payment() {
 
@@ -53,7 +54,7 @@ function Payment() {
 // Inscrire le joueur au tournoi
 
 await axios.post(
-"https://arenafoot-backend-production.up.railway.app/api/tournaments/join",
+`${API}/api/tournaments/join`,
 {
     tournament_id: tournament.id,
     user_id: user.id,
@@ -64,7 +65,7 @@ await axios.post(
 
 
             const response = await axios.post(
-                "https://arenafoot-backend-production.up.railway.app/api/payments/create",
+                `${API}/api/payments/create`,
                 {
 
                     player_id: user.id,
