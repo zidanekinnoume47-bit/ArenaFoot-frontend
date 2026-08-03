@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/dashboard.css";
 
 
@@ -8,7 +8,7 @@ function Dashboard(){
 
 
 const navigate = useNavigate();
-
+const location = useLocation();
 
 const user = JSON.parse(
   localStorage.getItem("user")
@@ -99,7 +99,42 @@ useEffect(() => {
 if(!user){
 return;
 }
+// =============================
+// Validation automatique du paiement
+// =============================
 
+const params = new URLSearchParams(location.search);
+
+const status = params.get("status");
+
+const paymentId = localStorage.getItem("payment_id");
+
+if (status === "approved" && paymentId) {
+
+    axios.post(
+        "https://arenafoot-backend-production.up.railway.app/api/payments/validate",
+        {
+            payment_id: paymentId
+        }
+    )
+    .then(() => {
+
+        alert("✅ Paiement confirmé ! Vous êtes inscrit au tournoi.");
+
+        localStorage.removeItem("payment_id");
+
+        window.history.replaceState({}, "", "/dashboard");
+
+    })
+    .catch((error) => {
+
+        console.log(error);
+
+        alert("Erreur validation du paiement");
+
+    });
+
+}
 
 
 
