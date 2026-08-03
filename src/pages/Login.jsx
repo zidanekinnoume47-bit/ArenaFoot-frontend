@@ -62,8 +62,15 @@ localStorage.setItem(
 
 alert("Connexion réussie");
 
+if (response.data.user.role === "admin") {
 
-navigate("/dashboard");
+    navigate("/admin");
+
+} else {
+
+    navigate("/dashboard");
+
+}
 
 
 }catch(error){
