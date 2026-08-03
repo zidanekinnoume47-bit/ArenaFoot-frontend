@@ -24,7 +24,7 @@ useEffect(()=>{
 // Charger le tournoi
 
 axios.get(
-`https://arenafoot-backend-production.up.railway.app/api/tournaments/${id}`
+`http://localhost:5000/api/tournaments/${id}`
 )
 
 .then(res=>{

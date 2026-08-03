@@ -20,7 +20,7 @@ const finishMatch = async(matchId, winnerId)=>{
 try{
 
 await axios.put(
-"https://arenafoot-backend-production.up.railway.app/api/matches/finish",
+"http://localhost:5000/api/matches/finish",
 {
 match_id: matchId,
 winner: winnerId,
@@ -47,9 +47,9 @@ alert("Erreur validation match");
 
 
 useEffect(() => {
-
+    
 axios.get(
-`https://arenafoot-backend-production.up.railway.app/api/matches/bracket/${id}`
+`http://localhost:5000/api/matches/bracket/${id}`
 )
 
 .then(res => {
