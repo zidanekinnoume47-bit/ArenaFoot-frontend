@@ -24,6 +24,8 @@ import AdminPayments from "./pages/AdminPayments";
 import AdminRooms from "./pages/AdminRooms";
 import AdminRanking from "./pages/AdminRanking";
 import AdminSettings from "./pages/AdminSettings";
+import AdminMatches from "./pages/AdminMatches";
+
 
 
 function App() {
@@ -50,6 +52,7 @@ function App() {
         <Route path="/admin/rooms" element={<AdminRooms />} />
         <Route path="/admin/ranking" element={<AdminRanking />} />
         <Route path="/admin/settings" element={<AdminSettings />} />
+        <Route path="/admin/matches" element={<AdminMatches />} />
       </Routes>
     </BrowserRouter>
   );
