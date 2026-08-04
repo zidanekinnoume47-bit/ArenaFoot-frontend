@@ -238,18 +238,9 @@ match={match}
 
 ))
 
+
+
 }
-
-</div>
-
-
-
-
-
-<div className="round finale">
-
-<h2>Finale 🏆</h2>
-
 
 {
 

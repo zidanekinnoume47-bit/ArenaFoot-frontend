@@ -182,3 +182,41 @@ export const getTournamentPlayers = async (id) => {
     return await response.json();
 
 };
+
+
+export const getPayments = async () => {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${API}/payments`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return await response.json();
+
+};
+
+
+
+export const validatePayment = async (id) => {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${API}/payment/${id}`,
+        {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return await response.json();
+
+};

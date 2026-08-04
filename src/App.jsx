@@ -20,6 +20,7 @@ import Profile from "./pages/Profile.jsx";
 import AdminPlayers from "./pages/AdminPlayers";
 import AdminTournaments from "./pages/AdminTournaments";
 import AdminRewards from "./pages/AdminRewards";
+import AdminPayments from "./pages/AdminPayments";
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
         <Route path="/admin/players" element={<AdminPlayers />} />
         <Route path="/admin/tournaments" element={<AdminTournaments />} />
         <Route path="/admin/rewards" element={<AdminRewards />} />
+        <Route path="/admin/payments" element={<AdminPayments />} />
       </Routes>
     </BrowserRouter>
   );
