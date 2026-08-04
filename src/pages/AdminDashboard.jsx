@@ -6,7 +6,8 @@ import {
     getTournaments,
     deleteTournament,
     getRewards,
-    sendReward
+    sendReward,
+    getPayments
 } from "../service/adminService";
 
 import Sidebar from "../components/admin/Sidebar";
@@ -20,9 +21,20 @@ const [players,setPlayers]=useState([]);
 const [tournaments,setTournaments]=useState([]);
 
 const [rewards, setRewards] = useState([]);
+const [payments, setPayments] = useState([]);
 
 
 useEffect(() => {
+
+
+    getPayments().then(data => {
+
+    console.log("PAYMENTS :", data);
+
+    setPayments(Array.isArray(data) ? data : []);
+
+     });
+
 
     getRewards().then(data => {
 
@@ -91,6 +103,7 @@ return(
         <DashboardCards
             players={players}
             tournaments={tournaments}
+            payments={payments}
         />
 
         <h2>Joueurs</h2>
