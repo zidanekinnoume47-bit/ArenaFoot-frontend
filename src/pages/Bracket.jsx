@@ -163,113 +163,110 @@ Gagnant : {match.player_two_name}
 
 
 
-
-return(
+return (
 
 <div className="bracket-page">
 
+    <h1>🏆 ArenaFoot Tournament</h1>
 
-<h1>
-🏆 ArenaFoot Tournament
-</h1>
+    <div className="bracket">
 
+        {/* Huitièmes */}
 
+        <div className="round">
 
-<div className="bracket">
+            <h2>8e Finale</h2>
 
+            {
+                rounds["Huitième de finale"].map(match => (
+                    <MatchCard
+                        key={match.id}
+                        match={match}
+                    />
+                ))
+            }
 
-<div className="round">
+        </div>
 
-<h2>8e Finale</h2>
+        {/* Quarts */}
 
-{
+        <div className="round">
 
-rounds["Huitième de finale"].map(match=>(
+            <h2>Quart</h2>
 
-<MatchCard 
-key={match.id}
-match={match}
-/>
+            {
+                rounds["Quart de finale"].map(match => (
+                    <MatchCard
+                        key={match.id}
+                        match={match}
+                    />
+                ))
+            }
 
-))
+        </div>
 
-}
+        {/* Demi */}
 
-</div>
+        <div className="round">
 
+            <h2>Demi</h2>
 
+            {
+                rounds["Demi-finale"].map(match => (
+                    <MatchCard
+                        key={match.id}
+                        match={match}
+                    />
+                ))
+            }
 
+        </div>
 
-<div className="round">
+        {/* Finale */}
 
-<h2>Quart</h2>
+        <div className="round finale">
 
-{
+            <h2>Finale 🏆</h2>
 
-rounds["Quart de finale"].map(match=>(
+            {
+                rounds["Finale"].map(match => (
 
-<MatchCard
-key={match.id}
-match={match}
-/>
+                    <div className="match champion" key={match.id}>
 
-))
+                        <p>
+                            {match.player_one_name || "À déterminer"}
+                        </p>
 
-}
+                        <span>
+                            {match.score || "VS"}
+                        </span>
 
-</div>
+                        <p>
+                            {match.player_two_name || "À déterminer"}
+                        </p>
 
+                        {
+                            match.winner && (
 
+                                <h3>
+                                    👑 {
+                                        match.winner == match.player_one
+                                        ? match.player_one_name
+                                        : match.player_two_name
+                                    }
+                                </h3>
 
+                            )
+                        }
 
+                    </div>
 
-<div className="round">
+                ))
+            }
 
-<h2>Demi</h2>
+        </div>
 
-{
-
-rounds["Demi-finale"].map(match=>(
-
-<MatchCard
-key={match.id}
-match={match}
-/>
-
-))
-
-
-
-}
-
-{
-
-<div className="round finale">
-
-<h2>Finale 🏆</h2>
-
-{
-rounds["Finale"].map(match => (
-
-<MatchCard
-key={match.id}
-match={match}
-/>
-
-))
-}
-
-</div>
-
-}
-
-
-
-</div>
-
-
-</div>
-
+    </div>
 
 </div>
 

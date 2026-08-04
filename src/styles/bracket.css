@@ -17,25 +17,25 @@ font-size:35px;
 }
 
 
-
 .bracket{
 
 display:grid;
-grid-template-columns:repeat(4, 1fr);
-gap:30px;
-align-items:center;
+grid-template-columns:repeat(4,260px);
+justify-content:center;
+column-gap:90px;
+align-items:flex-start;
 overflow-x:auto;
+padding:40px;
 
 }
-
 
 
 .round{
 
 display:flex;
 flex-direction:column;
-justify-content:space-between;
-min-height:1600px;
+justify-content:space-evenly;
+min-height:900px;
 
 }
 
@@ -47,18 +47,26 @@ color:#f59e0b;
 
 }
 
-
 .match{
 
-background:white;
-color:#0f172a;
-padding:15px;
-border-radius:12px;
-text-align:center;
-box-shadow:0 5px 15px rgba(0,0,0,0.3);
-position:relative;
 width:240px;
 min-height:120px;
+
+background:#fff;
+color:#111827;
+
+border-radius:15px;
+
+padding:15px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+position:relative;
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+gap:10px;
 
 }
 
@@ -194,21 +202,26 @@ top:20%;
 
 /* Alignement des tours */
 
-.round:first-child{
-justify-content:space-between;
+.round:nth-child(1){
+
+padding-top:0;
+
 }
 
 .round:nth-child(2){
-justify-content:space-evenly;
-padding-top:80px;
+
+padding-top:70px;
+
 }
 
 .round:nth-child(3){
-justify-content:space-around;
+
 padding-top:170px;
+
 }
 
 .round:nth-child(4){
-justify-content:center;
-padding-top:280px;
+
+padding-top:300px;
+
 }
