@@ -51,25 +51,13 @@ color:#2563EB;
 
 .nav-links{
 
-position:fixed;
+display:flex;
 
-top:70px;
+list-style:none;
 
-left:0;
+gap:30px;
 
-width:100%;
-
-background:#0F172A;
-
-display:none;
-
-flex-direction:column;
-
-padding:20px 0;
-
-gap:20px;
-
-z-index:999;
+align-items:center;
 
 }
 
@@ -122,36 +110,9 @@ cursor:pointer;
 @media(max-width:768px){
 
 
-.navbar{
-
-padding:0 20px;
-
-height:70px;
-
-}
-
-
-
-.logo{
-
-font-size:23px;
-
-}
-
-
-
-.burger{
-
-display:block;
-
-}
-
-
-
 .nav-links{
 
-
-position:absolute;
+position:fixed;
 
 top:70px;
 
@@ -161,7 +122,6 @@ width:100%;
 
 background:#0F172A;
 
-
 display:none;
 
 flex-direction:column;
@@ -170,10 +130,9 @@ padding:20px 0;
 
 gap:20px;
 
+z-index:999;
 
 }
-
-
 
 .nav-links.active{
 
