@@ -7,7 +7,13 @@ box-sizing:border-box;
 
 .navbar{
 
+position:fixed;
+
+top:0;
+left:0;
+
 width:100%;
+
 height:75px;
 
 display:flex;
@@ -20,8 +26,11 @@ background:#0F172A;
 
 border-bottom:1px solid #1E293B;
 
-}
+z-index:1000;
 
+box-shadow:0 4px 10px rgba(0,0,0,.25);
+
+}
 
 
 .logo{
@@ -40,16 +49,27 @@ color:#2563EB;
 }
 
 
-
 .nav-links{
 
-display:flex;
+position:fixed;
 
-list-style:none;
+top:70px;
 
-gap:30px;
+left:0;
 
-align-items:center;
+width:100%;
+
+background:#0F172A;
+
+display:none;
+
+flex-direction:column;
+
+padding:20px 0;
+
+gap:20px;
+
+z-index:999;
 
 }
 
