@@ -155,3 +155,20 @@ export const createTestPlayers = async (tournamentId) => {
 
   return await response.json();
 };
+
+// ð BRACKET : GÃ©nÃ©rer l'arbre des matchs (1/8Ã¨me de finale) quand 16 joueurs sont inscrits
+export const generateBracket = async (tournamentId) => {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API}/tournament/${tournamentId}/generate-bracket`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  return await response.json();
+};
