@@ -11,7 +11,9 @@ import {
 function AdminTournaments() {
   const [tournaments, setTournaments] = useState([]);
   const [players, setPlayers] = useState([]);
+  const [matches, setMatches] = useState([]);
   const [selectedTournament, setSelectedTournament] = useState(null);
+  const [viewMode, setViewMode] = useState(null); // 'players' ou 'bracket'
   const [loadingTournamentId, setLoadingTournamentId] = useState(null);
   const [bracketLoadingId, setBracketLoadingId] = useState(null);
 
@@ -44,6 +46,26 @@ function AdminTournaments() {
     setPlayers(Array.isArray(data) ? data : []);
 
     setSelectedTournament(id);
+    setViewMode("players");
+  };
+
+  // Charger et afficher les matchs du tournoi
+  const handleShowBracket = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `https://arenafoot-backend-production.up.railway.app/api/admin/tournament/${id}/bracket`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      const data = await response.json();
+      setMatches(Array.isArray(data) ? data : []);
+      setSelectedTournament(id);
+      setViewMode("bracket");
+    } catch (err) {
+      console.error("Erreur chargement bracket :", err);
+    }
   };
 
   // Fonction pour injecter 15 joueurs de test payés
@@ -92,6 +114,7 @@ function AdminTournaments() {
       } else {
         alert("❌ Impossible de générer le bracket.");
       }
+      await handleShowBracket(tournamentId);
       loadTournaments();
     } catch (err) {
       console.error("Erreur génération bracket :", err);
@@ -111,7 +134,7 @@ function AdminTournaments() {
         {tournaments.map((t) => {
           // Compter les joueurs inscrits si les participants sont chargés
           const isSelected = selectedTournament === t.id;
-          const paidCount = isSelected
+          const paidCount = isSelected && viewMode === "players"
             ? players.filter((p) => p.payment_status === "paid").length
             : null;
           const isFull = paidCount !== null && paidCount >= 16;
@@ -151,7 +174,14 @@ function AdminTournaments() {
 
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "10px" }}>
                 <button onClick={() => handlePlayers(t.id)}>
-                  👥 Participants {isSelected ? `(${players.length})` : ""}
+                  👥 Participants {isSelected && viewMode === "players" ? `(${players.length})` : ""}
+                </button>
+
+                <button
+                  onClick={() => handleShowBracket(t.id)}
+                  style={{ backgroundColor: "#2563eb", color: "white", border: "none", borderRadius: "4px", padding: "8px 12px", cursor: "pointer" }}
+                >
+                  👁 Voir le Bracket
                 </button>
 
                 {/* BOUTON DE GENERATION DU BRACKET */}
@@ -201,7 +231,7 @@ function AdminTournaments() {
               </div>
 
               {/* TABLEAU DES PARTICIPANTS */}
-              {selectedTournament === t.id && (
+              {isSelected && viewMode === "players" && (
                 <div style={{ marginTop: "20px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <h3>
@@ -256,6 +286,40 @@ function AdminTournaments() {
                       ))}
                     </tbody>
                   </table>
+                </div>
+              )}
+
+              {/* ARBRE DU TOURNOI (MATCHS) */}
+              {isSelected && viewMode === "bracket" && (
+                <div style={{ marginTop: "20px" }}>
+                  <h3>🏆 Arbre du Tournoi - 1/8ème de Finale ({matches.length} Matchs)</h3>
+                  {matches.length === 0 ? (
+                    <p style={{ color: "#666" }}>Aucun match n'a encore été généré. Cliquez sur "🏆 Générer Bracket".</p>
+                  ) : (
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "15px", marginTop: "15px" }}>
+                      {matches.map((m, index) => (
+                        <div
+                          key={m.id}
+                          style={{
+                            border: "1px solid #3b82f6",
+                            borderRadius: "8px",
+                            padding: "12px",
+                            backgroundColor: "#eff6ff"
+                          }}
+                        >
+                          <h4 style={{ margin: "0 0 10px 0", color: "#1d4ed8" }}>Match {index + 1}</h4>
+                          <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold" }}>
+                            <span>{m.player_one_pseudo || "En attente"}</span>
+                            <span>VS</span>
+                            <span>{m.player_two_pseudo || "En attente"}</span>
+                          </div>
+                          <div style={{ marginTop: "8px", fontSize: "0.85rem", color: "#6b7280" }}>
+                            Statut : {m.status === "pending" ? "⏳ En attente" : m.status}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
