@@ -4,7 +4,8 @@ import {
   getTournaments,
   deleteTournament,
   getTournamentPlayers,
-  createTestPlayers
+  createTestPlayers,
+  generateBracket
 } from "../service/adminService";
 
 function AdminTournaments() {
@@ -12,6 +13,7 @@ function AdminTournaments() {
   const [players, setPlayers] = useState([]);
   const [selectedTournament, setSelectedTournament] = useState(null);
   const [loadingTournamentId, setLoadingTournamentId] = useState(null);
+  const [bracketLoadingId, setBracketLoadingId] = useState(null);
 
   useEffect(() => {
     loadTournaments();
@@ -71,6 +73,34 @@ function AdminTournaments() {
     }
   };
 
+  // Fonction pour déclencher la génération automatique du Bracket (16 joueurs)
+  const handleGenerateBracket = async (tournamentId) => {
+    if (
+      !window.confirm(
+        "Générer le tirage au sort et les 8 matchs de 1/8ème de finale pour ce tournoi ?"
+      )
+    ) {
+      return;
+    }
+
+    setBracketLoadingId(tournamentId);
+
+    try {
+      const res = await generateBracket(tournamentId);
+      if (res.message) {
+        alert(res.message);
+      } else {
+        alert("❌ Impossible de générer le bracket.");
+      }
+      loadTournaments();
+    } catch (err) {
+      console.error("Erreur génération bracket :", err);
+      alert("❌ Une erreur est survenue lors de la génération du bracket.");
+    } finally {
+      setBracketLoadingId(null);
+    }
+  };
+
   return (
     <div className="admin-page">
       <Sidebar />
@@ -124,7 +154,22 @@ function AdminTournaments() {
                   👥 Participants {isSelected ? `(${players.length})` : ""}
                 </button>
 
-                <button>🏆 Bracket</button>
+                {/* BOUTON DE GENERATION DU BRACKET */}
+                <button
+                  onClick={() => handleGenerateBracket(t.id)}
+                  disabled={bracketLoadingId === t.id}
+                  style={{
+                    backgroundColor: "#16a34a",
+                    color: "white",
+                    border: "none",
+                    padding: "8px 12px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontWeight: "bold"
+                  }}
+                >
+                  {bracketLoadingId === t.id ? "⏳ Tirage..." : "🏆 Générer Bracket"}
+                </button>
 
                 <button>✏ Modifier</button>
 
