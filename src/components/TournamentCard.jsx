@@ -68,7 +68,8 @@ function TournamentCard({ tournament }) {
             </button>
 
             {
-                tournament.status !== "finished" && (
+                tournament.status === "open" &&
+                playerCount < (tournament.players_limit || 16) && (
 
                     <button
                         className="participate-btn"
