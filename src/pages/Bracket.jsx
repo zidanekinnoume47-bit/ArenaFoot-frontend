@@ -186,18 +186,14 @@ function Bracket() {
                 const p2Name = match.player_two_pseudo || match.player_two_name || "À déterminer";
 
                 return (
-                  <div className="match champion" key={match.id}>
-                    <p>{p1Name}</p>
-                    <span>{match.score || "VS"}</span>
-                    <p>{p2Name}</p>
+                  <div className="round finale">
+                      <h2>Finale 🏆 ({rounds["Finale"].length})</h2>
 
-                    {match.winner && (
-                      <h3>
-                        👑{" "}
-                        {match.winner === match.player_one ? p1Name : p2Name}
-                      </h3>
-                    )}
+                      {rounds["Finale"].map((match) => (
+                          <MatchCard key={match.id} match={match} />
+                      ))}
                   </div>
+
                 );
               })
             ) : (
