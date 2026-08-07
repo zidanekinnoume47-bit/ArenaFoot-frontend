@@ -25,6 +25,7 @@ import AdminRooms from "./pages/AdminRooms";
 import AdminRanking from "./pages/AdminRanking";
 import AdminSettings from "./pages/AdminSettings";
 import AdminMatches from "./pages/AdminMatches";
+import VerifyEmail from "./pages/VerifyEmail";
 
 
 
@@ -53,6 +54,7 @@ function App() {
         <Route path="/admin/ranking" element={<AdminRanking />} />
         <Route path="/admin/settings" element={<AdminSettings />} />
         <Route path="/admin/matches" element={<AdminMatches />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
     </BrowserRouter>
   );
