@@ -83,7 +83,15 @@ function Register() {
 
 
 
-      navigate("/login");
+      navigate("/verify-email", {
+
+        state: {
+
+          email
+
+        }
+
+      });
 
 
 
