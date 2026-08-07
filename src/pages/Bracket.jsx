@@ -179,7 +179,6 @@ function Bracket() {
 
           {/* Finale */}
           <div className="round finale">
-            <h2>Finale 🏆 ({rounds["Finale"].length})</h2>
             {rounds["Finale"].length > 0 ? (
               rounds["Finale"].map((match) => {
                 const p1Name = match.player_one_pseudo || match.player_one_name || "À déterminer";
