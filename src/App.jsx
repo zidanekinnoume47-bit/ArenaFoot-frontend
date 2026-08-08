@@ -29,6 +29,10 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyResetCode from "./pages/VerifyResetCode";
 import ResetPassword from "./pages/ResetPassword";
+import AdminLogin from "./components/admin/AdminLogin";
+import AdminForgotPassword from "./components/admin/AdminForgotPassword";
+import AdminVerifyResetCode from "./components/admin/AdminVerifyResetCode";
+import AdminResetPassword from "./components/admin/AdminResetPassword";
 
 
 
@@ -41,6 +45,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/tournaments" element={<Tournaments />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/ranking" element={<RankingCard />} />
@@ -61,6 +66,11 @@ function App() {
         <Route path="/forgot-password"element={<ForgotPassword />}/>
         <Route path="/verify-reset-code"element={<VerifyResetCode />}/>
         <Route path="/reset-password"element={<ResetPassword />}/>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/arenafoot-control"element={<AdminLogin />}/>
+        <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+        <Route path="/admin/verify-reset-code" element={<AdminVerifyResetCode />} />
+        <Route path="/admin/reset-password" element={<AdminResetPassword />} />
 
       </Routes>
     </BrowserRouter>
