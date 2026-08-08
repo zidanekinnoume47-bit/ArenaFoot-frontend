@@ -33,6 +33,7 @@ import AdminLogin from "./components/admin/AdminLogin";
 import AdminForgotPassword from "./components/admin/AdminForgotPassword";
 import AdminVerifyResetCode from "./components/admin/AdminVerifyResetCode";
 import AdminResetPassword from "./components/admin/AdminResetPassword";
+import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
 
 
 
@@ -44,7 +45,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/tournaments" element={<Tournaments />} />
         <Route path="/payment" element={<Payment />} />
@@ -54,14 +54,27 @@ function App() {
         <Route path="/tournaments/:id" element={<TournamentDetails />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/room/:id" element={<Room/>} />
-        <Route path="/admin/players" element={<AdminPlayers />} />
-        <Route path="/admin/tournaments" element={<AdminTournaments />} />
-        <Route path="/admin/rewards" element={<AdminRewards />} />
-        <Route path="/admin/payments" element={<AdminPayments />} />
-        <Route path="/admin/rooms" element={<AdminRooms />} />
-        <Route path="/admin/ranking" element={<AdminRanking />} />
-        <Route path="/admin/settings" element={<AdminSettings />} />
-        <Route path="/admin/matches" element={<AdminMatches />} />
+        <Route element={<AdminProtectedRoute />}>
+
+          <Route path="/admin" element={<AdminDashboard />} />
+
+          <Route path="/admin/players" element={<AdminPlayers />} />
+
+          <Route path="/admin/tournaments" element={<AdminTournaments />} />
+
+          <Route path="/admin/rewards" element={<AdminRewards />} />
+
+          <Route path="/admin/payments" element={<AdminPayments />} />
+
+          <Route path="/admin/rooms" element={<AdminRooms />} />
+
+          <Route path="/admin/ranking" element={<AdminRanking />} />
+
+          <Route path="/admin/settings" element={<AdminSettings />} />
+
+          <Route path="/admin/matches" element={<AdminMatches />} />
+
+        </Route>
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/forgot-password"element={<ForgotPassword />}/>
         <Route path="/verify-reset-code"element={<VerifyResetCode />}/>
