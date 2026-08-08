@@ -26,6 +26,9 @@ import AdminRanking from "./pages/AdminRanking";
 import AdminSettings from "./pages/AdminSettings";
 import AdminMatches from "./pages/AdminMatches";
 import VerifyEmail from "./pages/VerifyEmail";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyResetCode from "./pages/VerifyResetCode";
+import ResetPassword from "./pages/ResetPassword";
 
 
 
@@ -55,6 +58,10 @@ function App() {
         <Route path="/admin/settings" element={<AdminSettings />} />
         <Route path="/admin/matches" element={<AdminMatches />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/forgot-password"element={<ForgotPassword />}/>
+        <Route path="/verify-reset-code"element={<VerifyResetCode />}/>
+        <Route path="/reset-password"element={<ResetPassword />}/>
+
       </Routes>
     </BrowserRouter>
   );

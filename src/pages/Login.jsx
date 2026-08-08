@@ -124,9 +124,18 @@ Se connecter
 </button>
 
 
-<p>
-Mot de passe oublié ?
-</p>
+<button
+  type="button"
+  onClick={() => navigate("/forgot-password")}
+  style={{
+    background: "none",
+    border: "none",
+    color: "#38bdf8",
+    cursor: "pointer"
+  }}>
+
+  Mot de passe oublié ?
+</button>
 
 
 </div>
