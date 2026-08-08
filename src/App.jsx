@@ -57,6 +57,8 @@ function App() {
 
           <Route path="/admin" element={<AdminDashboard />} />
 
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
           <Route path="/admin/players" element={<AdminPlayers />} />
 
           <Route path="/admin/tournaments" element={<AdminTournaments />} />
