@@ -133,3 +133,13 @@ color:#94A3B8;
 }
 
 }
+
+.footer-contact a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-contact a:hover {
+    color: #2563EB;
+    text-decoration: underline;
+}

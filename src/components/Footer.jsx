@@ -56,11 +56,11 @@ Contact
 </h3>
 
 <p>
-📧 contact@arenafut.com
+  📧 <a href="mailto:arenafoot.app@gmail.com">arenafoot.app@gmail.com</a>
 </p>
 
 <p>
-📱 +229 01 90 69 29 65
+  📱 <a href="tel:+2290190692965">+229 01 90 69 29 65</a>
 </p>
 
 </div>
