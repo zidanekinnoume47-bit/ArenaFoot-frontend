@@ -143,3 +143,28 @@ display:flex;
 
 
 }
+
+
+@media(max-width:768px){
+
+    .burger{
+        display:block;
+    }
+
+    .nav-links{
+        position:fixed;
+        top:70px;
+        left:0;
+        width:100%;
+        background:#0F172A;
+        display:none;
+        flex-direction:column;
+        padding:20px 0;
+        gap:20px;
+        z-index:999;
+    }
+
+    .nav-links.active{
+        display:flex;
+    }
+}
