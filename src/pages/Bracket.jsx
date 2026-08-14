@@ -40,22 +40,7 @@ function Bracket() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const finishMatch = async (matchId, winnerId) => {
-    try {
-      await axios.post(`${API}/api/matches/finish`, {
-        match_id: matchId,
-        winner: winnerId,
-        score: "1-0"
-      });
-
-      alert("Match terminé avec succès !");
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-      alert("Erreur lors de la validation du match");
-    }
-  };
-
+  
   // Mapper les noms de tours de la BDD vers notre structure
   const rounds = {
     "Huitième de finale": [],
@@ -110,18 +95,6 @@ function Bracket() {
         <p style={{ fontWeight: "bold" }}>{p1Name}</p>
         <span>{match.score || "VS"}</span>
         <p style={{ fontWeight: "bold" }}>{p2Name}</p>
-
-        {match.status !== "finished" && match.status !== "completed" && match.player_one && (
-          <button onClick={() => finishMatch(match.id, match.player_one)}>
-            Gagnant : {p1Name}
-          </button>
-        )}
-
-        {match.status !== "finished" && match.status !== "completed" && match.player_two && (
-          <button onClick={() => finishMatch(match.id, match.player_two)}>
-            Gagnant : {p2Name}
-          </button>
-        )}
       </div>
     );
   };
@@ -179,24 +152,19 @@ function Bracket() {
 
           {/* Finale */}
           <div className="round finale">
+            <h2>Finale 🏆 ({rounds["Finale"].length})</h2>
+
             {rounds["Finale"].length > 0 ? (
-              rounds["Finale"].map((match) => {
-                const p1Name = match.player_one_pseudo || match.player_one_name || "À déterminer";
-                const p2Name = match.player_two_pseudo || match.player_two_name || "À déterminer";
-
-                return (
-                  <div className="round finale">
-                      <h2>Finale 🏆 ({rounds["Finale"].length})</h2>
-
-                      {rounds["Finale"].map((match) => (
-                          <MatchCard key={match.id} match={match} />
-                      ))}
-                  </div>
-
-                );
-              })
+              rounds["Finale"].map((match) => (
+                <MatchCard
+                  key={match.id}
+                  match={match}
+                />
+              ))
             ) : (
-              <p className="empty-round">En attente des 2 finalistes</p>
+              <p className="empty-round">
+                En attente des 2 finalistes
+              </p>
             )}
           </div>
         </div>
