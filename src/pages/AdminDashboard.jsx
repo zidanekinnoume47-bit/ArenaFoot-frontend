@@ -84,8 +84,8 @@ function AdminDashboard() {
     <div className="admin-page">
       <Sidebar />
 
-      <div style={{ marginLeft: "280px", padding: "20px" }}>
-        <h1>👑 ArenaFoot Admin</h1>
+<div className="admin-content">
+          <h1>👑 ArenaFoot Admin</h1>
 
         <DashboardCards
           players={players}
@@ -108,18 +108,12 @@ function AdminDashboard() {
           return (
             <div
               key={t.id}
-              style={{
-                border: isFull ? "2px solid #ef4444" : "1px solid #ddd",
-                padding: "15px",
-                marginBottom: "15px",
-                borderRadius: "8px",
-                backgroundColor: isFull ? "#fef2f2" : "#ffffff"
-              }}
+              className={`tournament-admin-card ${isFull ? "tournament-full" : ""}`}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3>{t.name}</h3>
+            <div className="tournament-header">               
+              <h3>{t.name}</h3>
                 {isFull && (
-                  <span style={{ backgroundColor: "#ef4444", color: "white", padding: "4px 8px", borderRadius: "4px", fontSize: "0.85rem", fontWeight: "bold" }}>
+                <span className="full-badge">
                     FULL (16/16)
                   </span>
                 )}
@@ -127,11 +121,12 @@ function AdminDashboard() {
 
               <p>Participation : {t.entry_fee} FCFA</p>
               <p>Récompense : {t.reward} FCFA</p>
-              <p style={{ fontWeight: "bold", color: isFull ? "#dc2626" : "#16a34a" }}>
+              <p className={`payment-count ${isFull ? "payment-full" : ""}`}>                
                 Paiements validés : {tournamentPayments.length} / 16
+
               </p>
 
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "10px" }}>
+              <div className="tournament-actions">                
                 <button>👥 Participants</button>
                 <button>🏆 Bracket</button>
                 <button>✏ Modifier</button>
