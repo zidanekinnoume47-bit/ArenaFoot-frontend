@@ -271,12 +271,35 @@ function Dashboard() {
           )}
         </div>
 
-        {/* RÉCOMPENSES */}
-        <div className="dashboard-card">
-          <h2>💰 Récompenses</h2>
-          <p>Gains obtenus :</p>
-          <p>40 000 FCFA</p>
-        </div>
+       {/* RÉCOMPENSES */}
+<div className="dashboard-card reward-card">
+
+  <div className="card-header">
+    <div>
+      <span className="card-label">
+        💰 RÉCOMPENSES
+      </span>
+
+      <h2>
+        Mes gains
+      </h2>
+    </div>
+
+    <div className="card-icon">
+      🏆
+    </div>
+  </div>
+
+  <div className="reward-amount">
+    {stats?.total_rewards || 0}
+    <span> FCFA</span>
+  </div>
+
+  <p>
+    Total des récompenses obtenues
+  </p>
+
+</div>
       </div>
     </div>
   );

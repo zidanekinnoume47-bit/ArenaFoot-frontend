@@ -1,176 +1,526 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+
 import "../styles/bracket.css";
 
-const API = import.meta.env.VITE_API_URL || "https://arenafoot-backend-production.up.railway.app";
+const API =
+  import.meta.env.VITE_API_URL ||
+  "https://arenafoot-backend-production.up.railway.app";
 
 function Bracket() {
+
   const { id } = useParams();
+
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
+
     if (!id) return;
 
     setLoading(true);
-    const token = localStorage.getItem("token");
 
-    // Tente d'abord de récupérer via l'API matches/bracket, sinon fallback sur la route tournament
+    const token =
+      localStorage.getItem("token");
+
+
     axios
-      .get(`${API}/api/matches/bracket/${id}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      })
+      .get(
+        `${API}/api/matches/bracket/${id}`,
+        {
+          headers: token
+            ? {
+                Authorization:
+                  `Bearer ${token}`
+              }
+            : {}
+        }
+      )
+
       .then((res) => {
-        console.log("BRACKET API :", res.data);
-        setMatches(Array.isArray(res.data) ? res.data : []);
+
+        console.log(
+          "BRACKET API :",
+          res.data
+        );
+
+        setMatches(
+          Array.isArray(res.data)
+            ? res.data
+            : []
+        );
+
       })
+
       .catch((err) => {
-        console.error("Erreur API matches/bracket, essai route tournoi...", err);
-        axios
-          .get(`${API}/api/tournaments/${id}/bracket`, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {}
-          })
-          .then((res) => {
-            console.log("BRACKET API (Tournois) :", res.data);
-            setMatches(Array.isArray(res.data) ? res.data : []);
-          })
-          .catch((e) => console.error("Erreur chargement bracket :", e));
+
+        console.error(
+          "Erreur API bracket :",
+          err
+        );
+
+
+        return axios.get(
+          `${API}/api/tournaments/${id}/bracket`,
+          {
+            headers: token
+              ? {
+                  Authorization:
+                    `Bearer ${token}`
+                }
+              : {}
+          }
+        );
+
       })
-      .finally(() => setLoading(false));
+
+      .then((res) => {
+
+        if (!res) return;
+
+        console.log(
+          "BRACKET TOURNOI :",
+          res.data
+        );
+
+        setMatches(
+          Array.isArray(res.data)
+            ? res.data
+            : []
+        );
+
+      })
+
+      .catch((err) => {
+
+        console.error(
+          "Erreur chargement bracket :",
+          err
+        );
+
+        setMatches([]);
+
+      })
+
+      .finally(() => {
+
+        setLoading(false);
+
+      });
+
   }, [id]);
 
-  
-  // Mapper les noms de tours de la BDD vers notre structure
+
+  // =====================================
+  // ROUNDS
+  // =====================================
+
   const rounds = {
+
     "Huitième de finale": [],
+
     "Quart de finale": [],
+
     "Demi-finale": [],
+
     "Finale": []
+
   };
 
+
   matches.forEach((match) => {
-    const roundName = match.round;
+
+    const roundName =
+      match.round;
+
 
     if (
+
       roundName === "round_of_16" ||
       roundName === "Huitième de finale" ||
       roundName === "1/8"
+
     ) {
-      rounds["Huitième de finale"].push(match);
-    } else if (
+
+      rounds["Huitième de finale"]
+        .push(match);
+
+    }
+
+    else if (
+
       roundName === "quarter_final" ||
       roundName === "quarter" ||
       roundName === "Quart de finale" ||
       roundName === "1/4"
+
     ) {
-      rounds["Quart de finale"].push(match);
-    } else if (
+
+      rounds["Quart de finale"]
+        .push(match);
+
+    }
+
+    else if (
+
       roundName === "semi_final" ||
       roundName === "semi" ||
       roundName === "Demi-finale" ||
       roundName === "1/2"
+
     ) {
-      rounds["Demi-finale"].push(match);
-    } else if (
+
+      rounds["Demi-finale"]
+        .push(match);
+
+    }
+
+    else if (
+
       roundName === "final" ||
       roundName === "Finale" ||
       roundName === "1/1"
+
     ) {
-      rounds["Finale"].push(match);
-    } else {
-      // Par défaut si le tour n'est pas spécifié
-      rounds["Huitième de finale"].push(match);
+
+      rounds["Finale"]
+        .push(match);
+
     }
+
   });
 
-  console.log("ROUNDS MAPPÉS :", rounds);
+
+  // =====================================
+  // MATCH CARD
+  // =====================================
 
   const MatchCard = ({ match }) => {
-    const p1Name = match.player_one_pseudo || match.player_one_name || "À déterminer";
-    const p2Name = match.player_two_pseudo || match.player_two_name || "À déterminer";
+
+    const p1 =
+      match.player_one_pseudo ||
+      match.player_one_name ||
+      "À déterminer";
+
+
+    const p2 =
+      match.player_two_pseudo ||
+      match.player_two_name ||
+      "À déterminer";
+
+
+    const score =
+      match.score || "VS";
+
 
     return (
-      <div className="match" key={match.id}>
-        <p style={{ fontWeight: "bold" }}>{p1Name}</p>
-        <span>{match.score || "VS"}</span>
-        <p style={{ fontWeight: "bold" }}>{p2Name}</p>
+
+      <div className="match-card">
+
+        <div className="match-number">
+
+          Match #{match.id}
+
+        </div>
+
+
+        <div className="match-player">
+
+          <span className="player-icon">
+            🎮
+          </span>
+
+          <strong>
+            {p1}
+          </strong>
+
+        </div>
+
+
+        <div className="match-score">
+
+          {score}
+
+        </div>
+
+
+        <div className="match-player">
+
+          <span className="player-icon">
+            🎮
+          </span>
+
+          <strong>
+            {p2}
+          </strong>
+
+        </div>
+
       </div>
+
     );
+
   };
 
-  return (
-    <div className="bracket-page">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 20px" }}>
-        <Link to="/dashboard" style={{ color: "#38bdf8", textDecoration: "none" }}>
-          ← Retour au tableau de bord
-        </Link>
-        <h1>🏆 ArenaFoot Tournament</h1>
+
+  // =====================================
+  // ROUND COMPONENT
+  // =====================================
+
+  const Round = ({
+    title,
+    icon,
+    matches,
+    emptyText,
+    className = ""
+  }) => {
+
+    return (
+
+      <div
+        className={`bracket-round ${className}`}
+      >
+
+        <div className="round-header">
+
+          <span>
+            {icon}
+          </span>
+
+          <div>
+
+            <h2>
+              {title}
+            </h2>
+
+            <small>
+              {matches.length} match
+              {matches.length > 1 ? "s" : ""}
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div className="round-matches">
+
+          {matches.length > 0 ? (
+
+            matches.map((match) => (
+
+              <MatchCard
+                key={match.id}
+                match={match}
+              />
+
+            ))
+
+          ) : (
+
+            <div className="empty-round">
+
+              <span>
+                ⏳
+              </span>
+
+              <p>
+                {emptyText}
+              </p>
+
+            </div>
+
+          )}
+
+        </div>
+
       </div>
 
+    );
+
+  };
+
+
+  // =====================================
+  // PAGE
+  // =====================================
+
+  return (
+
+    <div className="bracket-page">
+
+
+      {/* HEADER */}
+
+      <header className="bracket-header">
+
+        <Link
+          to={`/tournaments/${id}`}
+          className="back-link"
+        >
+          ← Retour au tournoi
+        </Link>
+
+
+        <div className="bracket-title">
+
+          <span>
+            🏆
+          </span>
+
+          <div>
+
+            <small>
+              ARENAFOOT
+            </small>
+
+            <h1>
+              Tableau du tournoi
+            </h1>
+
+          </div>
+
+        </div>
+
+
+        <div className="bracket-status">
+
+          <span></span>
+
+          {matches.length > 0
+            ? "Compétition active"
+            : "En attente"
+          }
+
+        </div>
+
+      </header>
+
+
+      {/* CONTENU */}
+
       {loading ? (
-        <div style={{ textAlign: "center", padding: "40px", color: "#aaa" }}>
-          ⏳ Chargement du bracket...
+
+        <div className="bracket-loading">
+
+          <div className="loading-ball">
+            ⚽
+          </div>
+
+          <h2>
+            Chargement du bracket...
+          </h2>
+
+          <p>
+            Préparation du tableau
+            de compétition.
+          </p>
+
         </div>
+
       ) : matches.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "40px", color: "#aaa" }}>
-          Aucun match n'a encore été généré pour ce tournoi.
+
+        <div className="bracket-empty">
+
+          <div>
+            🎮
+          </div>
+
+          <h2>
+            Aucun match disponible
+          </h2>
+
+          <p>
+            Les matchs apparaîtront ici
+            dès que le bracket sera généré.
+          </p>
+
+
+          <Link
+            to={`/tournaments/${id}`}
+            className="return-button"
+          >
+            Retour au tournoi
+          </Link>
+
         </div>
+
       ) : (
-        <div className="bracket">
-          {/* Huitièmes */}
-          <div className="round">
-            <h2>8e Finale ({rounds["Huitième de finale"].length})</h2>
-            {rounds["Huitième de finale"].map((match) => (
-              <MatchCard key={match.id} match={match} />
-            ))}
+
+        <main className="bracket-wrapper">
+
+          <div className="bracket-scroll">
+
+            <div className="bracket">
+
+
+              <Round
+                title="Huitièmes"
+                icon="⚔️"
+                matches={
+                  rounds[
+                    "Huitième de finale"
+                  ]
+                }
+                emptyText="En attente des joueurs"
+                className="round-16"
+              />
+
+
+              <Round
+                title="Quarts"
+                icon="🔥"
+                matches={
+                  rounds[
+                    "Quart de finale"
+                  ]
+                }
+                emptyText="En attente des vainqueurs des huitièmes"
+                className="quarter"
+              />
+
+
+              <Round
+                title="Demi-finales"
+                icon="⚡"
+                matches={
+                  rounds[
+                    "Demi-finale"
+                  ]
+                }
+                emptyText="En attente des vainqueurs des quarts"
+                className="semi"
+              />
+
+
+              <Round
+                title="Finale"
+                icon="🏆"
+                matches={
+                  rounds[
+                    "Finale"
+                  ]
+                }
+                emptyText="En attente des deux finalistes"
+                className="final"
+              />
+
+
+            </div>
+
           </div>
 
-          {/* Quarts */}
-          <div className="round">
-            <h2>Quart ({rounds["Quart de finale"].length})</h2>
-            {rounds["Quart de finale"].length > 0 ? (
-              rounds["Quart de finale"].map((match) => (
-                <MatchCard key={match.id} match={match} />
-              ))
-            ) : (
-              <p className="empty-round">En attente des vainqueurs 8e</p>
-            )}
-          </div>
+        </main>
 
-          {/* Demi */}
-          <div className="round">
-            <h2>Demi ({rounds["Demi-finale"].length})</h2>
-            {rounds["Demi-finale"].length > 0 ? (
-              rounds["Demi-finale"].map((match) => (
-                <MatchCard key={match.id} match={match} />
-              ))
-            ) : (
-              <p className="empty-round">En attente des vainqueurs Quarts</p>
-            )}
-          </div>
-
-          {/* Finale */}
-          <div className="round finale">
-            <h2>Finale 🏆 ({rounds["Finale"].length})</h2>
-
-            {rounds["Finale"].length > 0 ? (
-              rounds["Finale"].map((match) => (
-                <MatchCard
-                  key={match.id}
-                  match={match}
-                />
-              ))
-            ) : (
-              <p className="empty-round">
-                En attente des 2 finalistes
-              </p>
-            )}
-          </div>
-        </div>
       )}
+
+
     </div>
+
   );
+
 }
 
 export default Bracket;

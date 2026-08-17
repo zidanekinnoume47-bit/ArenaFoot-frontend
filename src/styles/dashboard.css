@@ -1,100 +1,869 @@
-.dashboard{
+/* =========================================
+   ARENAFOOT PLAYER DASHBOARD
+========================================= */
 
-min-height:100vh;
+.dashboard {
 
-background:#0F172A;
+    min-height: 100vh;
 
-padding:50px;
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            rgba(37, 99, 235, .14),
+            transparent 30%
+        ),
 
-color:white;
+        radial-gradient(
+            circle at 90% 40%,
+            rgba(245, 158, 11, .08),
+            transparent 30%
+        ),
 
-}
+        #020617;
 
+    padding: 45px;
 
-.dashboard h1{
-
-text-align:center;
-
-margin-bottom:40px;
-
-}
-
-
-.dashboard-container{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:25px;
+    color: white;
 
 }
 
 
-.dashboard-card{
+/* =========================================
+   TITRE PRINCIPAL
+========================================= */
 
-background:#1E293B;
+.dashboard > h1 {
 
-padding:25px;
+    max-width: 1250px;
 
-border-radius:15px;
+    margin:
+        0 auto 40px;
+
+    font-size:
+        clamp(32px, 5vw, 50px);
+
+    font-weight: 900;
+
+    letter-spacing: -1px;
+
+    text-align: center;
+
+    animation:
+        dashboardTitle .7s ease both;
+}
+
+
+@keyframes dashboardTitle {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
 
 }
 
 
-.dashboard-card h2{
+/* =========================================
+   CONTAINER
+========================================= */
 
-color:#2563EB;
+.dashboard-container {
 
-margin-bottom:20px;
+    max-width: 1250px;
 
-}
+    margin: auto;
 
+    display: grid;
 
-.dashboard-card p{
+    grid-template-columns:
+        repeat(3, 1fr);
 
-color:#CBD5E1;
-
-margin:10px 0;
-
-}
-
-
-.dashboard-card button{
-
-margin-top:15px;
-
-padding:12px;
-
-width:100%;
-
-background:#2563EB;
-
-border:none;
-
-border-radius:8px;
-
-color:white;
-
-cursor:pointer;
+    gap: 22px;
 
 }
 
 
+/* =========================================
+   CARDS
+========================================= */
 
-@media(max-width:768px){
+.dashboard-card {
 
-.dashboard{
+    position: relative;
 
-padding:20px;
+    padding: 27px;
+
+    border-radius: 20px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 59, .96),
+            rgba(15, 23, 42, .96)
+        );
+
+    border:
+        1px solid
+        rgba(148, 163, 184, .08);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, .18);
+
+    overflow: hidden;
+
+    transition:
+        transform .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease;
+
+    animation:
+        cardAppear .7s ease both;
+}
+
+
+.dashboard-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -90px;
+    top: -90px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(37, 99, 235, .07);
+
+    filter: blur(5px);
+
+    pointer-events: none;
 
 }
 
 
-.dashboard-container{
+.dashboard-card:hover {
 
-grid-template-columns:1fr;
+    transform:
+        translateY(-7px);
+
+    border-color:
+        rgba(59, 130, 246, .25);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, .3);
+}
+
+
+@keyframes cardAppear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(25px)
+            scale(.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
 
 }
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.card-header {
+
+    position: relative;
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+    margin-bottom: 20px;
+
+}
+
+
+.card-label {
+
+    display: block;
+
+    color: #60a5fa;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+}
+
+
+.dashboard-card h2 {
+
+    margin:
+        7px 0 0;
+
+    color: #f8fafc;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+}
+
+
+.card-icon {
+
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(37, 99, 235, .10);
+
+    font-size: 21px;
+
+}
+
+
+/* =========================================
+   TEXTES
+========================================= */
+
+.dashboard-card p {
+
+    color: #94a3b8;
+
+    margin:
+        10px 0;
+
+    line-height: 1.5;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================
+   PROFIL
+========================================= */
+
+.dashboard-card:first-child {
+
+    background:
+
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(37,99,235,.15),
+            transparent 45%
+        ),
+
+        #0f172a;
+
+}
+
+
+.dashboard-card:first-child p {
+
+    padding:
+        10px 12px;
+
+    margin:
+        8px 0;
+
+    border-radius: 9px;
+
+    background:
+        rgba(2,6,23,.5);
+
+}
+
+
+.dashboard-card:first-child p::first-letter {
+
+    color: #60a5fa;
+
+}
+
+
+/* =========================================
+   BOUTONS
+========================================= */
+
+.dashboard-card button {
+
+    position: relative;
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding:
+        13px 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px
+        rgba(37, 99, 235, .18);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        filter .25s ease;
+
+}
+
+
+.dashboard-card button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 12px 28px
+        rgba(37, 99, 235, .3);
+
+    filter:
+        brightness(1.08);
+
+}
+
+
+.dashboard-card button:active {
+
+    transform:
+        scale(.98);
+
+}
+
+
+/* =========================================
+   MES TOURNOIS
+========================================= */
+
+.dashboard-card:nth-child(2) > div {
+
+    padding:
+        14px;
+
+    margin-bottom:
+        10px;
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(2, 6, 23, .45);
+
+    border:
+        1px solid
+        rgba(148, 163, 184, .06);
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease;
+
+}
+
+
+.dashboard-card:nth-child(2) > div:hover {
+
+    transform:
+        translateX(4px);
+
+    border-color:
+        rgba(59,130,246,.2);
+
+}
+
+
+.dashboard-card:nth-child(2) > div p:first-child {
+
+    color: #f8fafc;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================
+   TOURNOIS DISPONIBLES
+========================================= */
+
+.dashboard-card:nth-child(3) > div {
+
+    padding:
+        15px !important;
+
+    margin-bottom:
+        12px !important;
+
+    border:
+        1px solid
+        rgba(148,163,184,.07) !important;
+
+    border-radius:
+        13px !important;
+
+    background:
+        rgba(2,6,23,.45);
+
+}
+
+
+.dashboard-card:nth-child(3) > div p:first-child {
+
+    color: #f8fafc;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+}
+
+
+.dashboard-card:nth-child(3) > div p {
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================
+   PLACES
+========================================= */
+
+.dashboard-card:nth-child(3)
+div p:nth-of-type(4) {
+
+    display: inline-block;
+
+    padding:
+        5px 9px;
+
+    border-radius: 7px;
+
+    background:
+        rgba(37,99,235,.1);
+
+    color: #60a5fa;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================
+   PROCHAIN MATCH
+========================================= */
+
+.dashboard-card:nth-child(4) {
+
+    background:
+
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(245,158,11,.12),
+            transparent 40%
+        ),
+
+        #0f172a;
+
+}
+
+
+.dashboard-card:nth-child(4) h3 {
+
+    margin:
+        20px 0;
+
+    padding:
+        17px;
+
+    border-radius:
+        12px;
+
+    background:
+        #020617;
+
+    border:
+        1px solid
+        rgba(245,158,11,.12);
+
+    text-align: center;
+
+    font-size: 18px;
+
+    color: #f8fafc;
+
+}
+
+
+.dashboard-card:nth-child(4) input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    margin-top: 10px;
+
+    padding:
+        13px;
+
+    border:
+        1px solid
+        #334155;
+
+    border-radius:
+        9px;
+
+    outline: none;
+
+    background:
+        #020617;
+
+    color: white;
+
+}
+
+
+.dashboard-card:nth-child(4) input:focus {
+
+    border-color:
+        #2563eb;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,.1);
+
+}
+
+
+/* =========================================
+   STATISTIQUES
+========================================= */
+
+.dashboard-card:nth-child(5) p {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding:
+        12px 14px;
+
+    margin:
+        8px 0;
+
+    border-radius:
+        9px;
+
+    background:
+        rgba(2,6,23,.45);
+
+}
+
+
+.dashboard-card:nth-child(5) p strong {
+
+    color: white;
+
+}
+
+
+/* =========================================
+   RÉCOMPENSES
+========================================= */
+
+.reward-card {
+
+    background:
+
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(245,158,11,.13),
+            transparent 40%
+        ),
+
+        #0f172a;
+
+}
+
+
+.reward-card .card-icon {
+
+    background:
+        rgba(245,158,11,.10);
+
+}
+
+
+.reward-amount {
+
+    margin-top: 20px;
+
+    color: #fbbf24;
+
+    font-size:
+        clamp(28px, 4vw, 42px);
+
+    font-weight: 900;
+
+    letter-spacing: -1px;
+
+}
+
+
+.reward-amount span {
+
+    color: #94a3b8;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================
+   STATUT
+========================================= */
+
+.dashboard-card:nth-child(2)
+p:nth-of-type(2) {
+
+    color: #cbd5e1;
+
+}
+
+
+/* =========================================
+   ANIMATION DÉLAIS
+========================================= */
+
+.dashboard-card:nth-child(1) {
+    animation-delay: .05s;
+}
+
+.dashboard-card:nth-child(2) {
+    animation-delay: .10s;
+}
+
+.dashboard-card:nth-child(3) {
+    animation-delay: .15s;
+}
+
+.dashboard-card:nth-child(4) {
+    animation-delay: .20s;
+}
+
+.dashboard-card:nth-child(5) {
+    animation-delay: .25s;
+}
+
+.dashboard-card:nth-child(6) {
+    animation-delay: .30s;
+}
+
+
+/* =========================================
+   TABLETTE
+========================================= */
+
+@media (max-width: 1050px) {
+
+    .dashboard {
+
+        padding:
+            35px 25px;
+
+    }
+
+
+    .dashboard-container {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+    .dashboard {
+
+        padding:
+            25px 15px;
+
+    }
+
+
+    .dashboard > h1 {
+
+        font-size:
+            32px;
+
+        margin-bottom:
+            30px;
+
+    }
+
+
+    .dashboard-container {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            16px;
+
+    }
+
+
+    .dashboard-card {
+
+        padding:
+            21px;
+
+        border-radius:
+            17px;
+
+    }
+
+
+    .dashboard-card h2 {
+
+        font-size:
+            20px;
+
+    }
+
+
+    .dashboard-card:hover {
+
+        transform:
+            none;
+
+    }
+
+
+    .dashboard-card:nth-child(4) h3 {
+
+        font-size:
+            16px;
+
+    }
+
+}
+
+
+/* =========================================
+   PETIT MOBILE
+========================================= */
+
+@media (max-width: 430px) {
+
+    .dashboard {
+
+        padding:
+            20px 12px;
+
+    }
+
+
+    .dashboard > h1 {
+
+        font-size:
+            27px;
+
+    }
+
+
+    .dashboard-card {
+
+        padding:
+            18px;
+
+    }
+
+
+    .reward-amount {
+
+        font-size:
+            30px;
+
+    }
 
 }
