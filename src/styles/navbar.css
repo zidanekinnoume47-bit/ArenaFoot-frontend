@@ -1,170 +1,647 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+/* =========================================
+   ARENAFOOT NAVBAR
+========================================= */
 
+.navbar {
 
-.navbar{
+    position: fixed;
 
-position:fixed;
+    top: 0;
+    left: 0;
 
-top:0;
-left:0;
+    width: 100%;
+    height: 76px;
 
-width:100%;
+    padding: 0 50px;
 
-height:75px;
+    display: flex;
 
-display:flex;
-justify-content:space-between;
-align-items:center;
+    align-items: center;
 
-padding:0 50px;
+    justify-content: space-between;
 
-background:#0F172A;
+    background:
+        rgba(2, 6, 23, .88);
 
-border-bottom:1px solid #1E293B;
+    backdrop-filter:
+        blur(18px);
 
-z-index:1000;
+    -webkit-backdrop-filter:
+        blur(18px);
 
-box-shadow:0 4px 10px rgba(0,0,0,.25);
+    border-bottom:
+        1px solid
+        rgba(148, 163, 184, .08);
 
-}
+    box-shadow:
+        0 8px 30px
+        rgba(0, 0, 0, .25);
 
-
-.logo{
-
-color:white;
-font-size:28px;
-font-weight:bold;
-
-}
-
-
-.logo span{
-
-color:#2563EB;
+    z-index: 1000;
 
 }
 
 
-.nav-links{
+/* =========================================
+   LOGO
+========================================= */
 
-display:flex;
+.navbar-logo {
 
-list-style:none;
+    display: flex;
 
-gap:30px;
+    align-items: center;
 
-align-items:center;
+    gap: 9px;
 
-}
+    color: white;
 
+    text-decoration: none;
 
+    font-size: 25px;
 
-.nav-links a{
+    font-weight: 900;
 
-color:white;
+    letter-spacing: -.5px;
 
-text-decoration:none;
-
-font-size:17px;
-
-}
-
-
-
-.register-btn{
-
-background:#2563EB;
-
-padding:10px 18px;
-
-border-radius:8px;
+    transition:
+        transform .25s ease;
 
 }
 
 
+.navbar-logo:hover {
 
-.burger{
-
-display:none;
-
-background:none;
-
-border:none;
-
-color:white;
-
-font-size:30px;
-
-cursor:pointer;
+    transform:
+        scale(1.03);
 
 }
 
 
+.logo-trophy {
 
+    font-size: 29px;
 
-
-@media(max-width:768px){
-
-
-.nav-links{
-
-position:fixed;
-
-top:70px;
-
-left:0;
-
-width:100%;
-
-background:#0F172A;
-
-display:none;
-
-flex-direction:column;
-
-padding:20px 0;
-
-gap:20px;
-
-z-index:999;
-
-}
-
-.nav-links.active{
-
-display:flex;
+    filter:
+        drop-shadow(
+            0 4px 8px
+            rgba(245, 158, 11, .25)
+        );
 
 }
 
 
+.logo-text span {
+
+    color: #3b82f6;
 
 }
 
 
-@media(max-width:768px){
+/* =========================================
+   NAV LINKS
+========================================= */
 
-    .burger{
-        display:block;
+.nav-links {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+
+}
+
+
+.nav-links li {
+
+    display: flex;
+
+    align-items: center;
+
+}
+
+
+.nav-links a {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding:
+        10px 13px;
+
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    border-radius: 9px;
+
+    transition:
+        color .25s ease,
+        background .25s ease,
+        transform .25s ease;
+
+}
+
+
+.nav-links a:hover {
+
+    color: white;
+
+    background:
+        rgba(37, 99, 235, .10);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.nav-links a span {
+
+    font-size: 16px;
+
+}
+
+
+/* =========================================
+   MON ESPACE
+========================================= */
+
+.dashboard-link {
+
+    color: #60a5fa !important;
+
+}
+
+
+/* =========================================
+   CONNEXION
+========================================= */
+
+.login-link {
+
+    border:
+        1px solid
+        rgba(148, 163, 184, .15);
+
+}
+
+
+/* =========================================
+   CRÉER UN COMPTE
+========================================= */
+
+.register-btn {
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: white !important;
+
+    padding:
+        11px 18px !important;
+
+    border-radius:
+        10px !important;
+
+    box-shadow:
+        0 7px 20px
+        rgba(37, 99, 235, .20);
+
+}
+
+
+.register-btn:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #3b82f6,
+            #2563eb
+        ) !important;
+
+    transform:
+        translateY(-2px) !important;
+
+}
+
+
+/* =========================================
+   UTILISATEUR CONNECTÉ
+========================================= */
+
+.user-profile {
+
+    background:
+        rgba(255, 255, 255, .04);
+
+    border:
+        1px solid
+        rgba(148, 163, 184, .08);
+
+}
+
+
+.user-avatar {
+
+    width: 27px;
+    height: 27px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(37, 99, 235, .15);
+
+}
+
+
+/* =========================================
+   DÉCONNEXION
+========================================= */
+
+.logout-btn {
+
+    border: none;
+
+    background:
+        transparent;
+
+    color: #f87171;
+
+    padding:
+        10px 13px;
+
+    border-radius:
+        9px;
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+    cursor: pointer;
+
+    transition:
+        background .25s ease,
+        color .25s ease;
+
+}
+
+
+.logout-btn:hover {
+
+    background:
+        rgba(239, 68, 68, .10);
+
+    color:
+        #fca5a5;
+
+}
+
+
+/* =========================================
+   BURGER
+========================================= */
+
+.burger {
+
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 8px;
+
+    border: none;
+
+    background:
+        rgba(255,255,255,.05);
+
+    border-radius:
+        10px;
+
+    cursor: pointer;
+
+    flex-direction:
+        column;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    gap: 5px;
+
+}
+
+
+.burger span {
+
+    width: 22px;
+    height: 2px;
+
+    background:
+        white;
+
+    border-radius:
+        5px;
+
+    transition:
+        transform .3s ease,
+        opacity .3s ease;
+
+}
+
+
+/* Burger ouvert */
+
+.burger.open span:nth-child(1) {
+
+    transform:
+        translateY(7px)
+        rotate(45deg);
+
+}
+
+
+.burger.open span:nth-child(2) {
+
+    opacity: 0;
+
+}
+
+
+.burger.open span:nth-child(3) {
+
+    transform:
+        translateY(-7px)
+        rotate(-45deg);
+
+}
+
+
+/* =========================================
+   TABLETTE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .navbar {
+
+        padding:
+            0 25px;
+
     }
 
-    .nav-links{
-        position:fixed;
-        top:70px;
-        left:0;
-        width:100%;
-        background:#0F172A;
-        display:none;
-        flex-direction:column;
-        padding:20px 0;
-        gap:20px;
-        z-index:999;
+
+    .nav-links {
+
+        gap: 2px;
+
     }
 
-    .nav-links.active{
-        display:flex;
+
+    .nav-links a {
+
+        padding:
+            9px 8px;
+
+        font-size:
+            13px;
+
     }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .navbar {
+
+        height:
+            70px;
+
+        padding:
+            0 18px;
+
+    }
+
+
+    .navbar-logo {
+
+        font-size:
+            22px;
+
+    }
+
+
+    .logo-trophy {
+
+        font-size:
+            25px;
+
+    }
+
+
+    /* Burger */
+
+    .burger {
+
+        display:
+            flex;
+
+    }
+
+
+    /* Menu */
+
+    .nav-links {
+
+        position:
+            fixed;
+
+        top:
+            70px;
+
+        left:
+            0;
+
+        width:
+            100%;
+
+        padding:
+            18px;
+
+        display:
+            none;
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+        gap:
+            8px;
+
+        background:
+            rgba(2, 6, 23, .97);
+
+        backdrop-filter:
+            blur(20px);
+
+        border-bottom:
+            1px solid
+            rgba(148, 163, 184, .1);
+
+        box-shadow:
+            0 15px 35px
+            rgba(0,0,0,.3);
+
+    }
+
+
+    .nav-links.active {
+
+        display:
+            flex;
+
+        animation:
+            mobileMenu .25s ease both;
+
+    }
+
+
+    @keyframes mobileMenu {
+
+        from {
+
+            opacity: 0;
+
+            transform:
+                translateY(-10px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+
+    .nav-links li {
+
+        width:
+            100%;
+
+    }
+
+
+    .nav-links a {
+
+        width:
+            100%;
+
+        padding:
+            14px;
+
+        justify-content:
+            flex-start;
+
+        font-size:
+            15px;
+
+        background:
+            rgba(255,255,255,.025);
+
+    }
+
+
+    .register-btn {
+
+        justify-content:
+            center !important;
+
+        margin-top:
+            5px;
+
+    }
+
+
+    .logout-btn {
+
+        width:
+            100%;
+
+        padding:
+            14px;
+
+        text-align:
+            left;
+
+        background:
+            rgba(239,68,68,.05);
+
+    }
+
+}
+
+
+/* =========================================
+   PETIT MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .navbar {
+
+        padding:
+            0 13px;
+
+    }
+
+
+    .navbar-logo {
+
+        font-size:
+            20px;
+
+    }
+
 }

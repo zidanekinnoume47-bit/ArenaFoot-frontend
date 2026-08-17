@@ -1,0 +1,244 @@
+.verify-login-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(37,99,235,.15),
+            transparent 40%
+        ),
+
+        #020617;
+
+}
+
+
+.verify-login-box {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    border-radius: 22px;
+
+    background:
+        #1e293b;
+
+    border:
+        1px solid
+        rgba(148,163,184,.1);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.35);
+
+}
+
+
+.verify-icon {
+
+    font-size: 55px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.verify-login-box h1 {
+
+    margin-bottom: 15px;
+
+    color: white;
+
+    font-size: 27px;
+
+}
+
+
+.verify-text {
+
+    color: #94a3b8;
+
+    line-height: 1.6;
+
+}
+
+
+.verify-email {
+
+    display: block;
+
+    margin:
+        10px 0 25px;
+
+    color: #60a5fa;
+
+    word-break: break-all;
+
+}
+
+
+.verify-login-box form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+}
+
+
+.verify-login-box input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 16px;
+
+    border:
+        1px solid
+        #334155;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        #0f172a;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    letter-spacing: 8px;
+
+}
+
+
+.verify-login-box input:focus {
+
+    border-color:
+        #2563eb;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,.12);
+
+}
+
+
+.verify-login-box form button {
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.verify-login-box form button:disabled {
+
+    opacity: .5;
+
+    cursor: not-allowed;
+
+}
+
+
+.verify-expire {
+
+    margin-top: 20px;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+}
+
+
+.back-login {
+
+    margin-top: 20px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #60a5fa;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+
+.back-login:hover {
+
+    text-decoration: underline;
+
+}
+
+
+@media (max-width: 500px) {
+
+    .verify-login-box {
+
+        padding: 30px 20px;
+
+    }
+
+
+    .verify-login-box h1 {
+
+        font-size: 23px;
+
+    }
+
+
+    .verify-login-box input {
+
+        font-size: 22px;
+
+        letter-spacing: 5px;
+
+    }
+
+}

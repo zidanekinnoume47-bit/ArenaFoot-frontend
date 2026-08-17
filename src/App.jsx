@@ -34,6 +34,7 @@ import AdminForgotPassword from "./components/admin/AdminForgotPassword";
 import AdminVerifyResetCode from "./components/admin/AdminVerifyResetCode";
 import AdminResetPassword from "./components/admin/AdminResetPassword";
 import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
+import VerifyLogin from "./pages/VerifyLogin";
 
 
 
@@ -85,6 +86,10 @@ function App() {
         <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
         <Route path="/admin/verify-reset-code" element={<AdminVerifyResetCode />} />
         <Route path="/admin/reset-password" element={<AdminResetPassword />} />
+        <Route
+    path="/verify-login"
+    element={<VerifyLogin />}
+/>
 
       </Routes>
     </BrowserRouter>

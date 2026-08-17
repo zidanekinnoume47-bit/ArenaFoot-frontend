@@ -1,149 +1,190 @@
-import React from 'react';
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 import "../styles/login.css";
+
 const API = import.meta.env.VITE_API_URL;
 
+function Login() {
 
-function Login(){
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-    email:"",
-    password:""
-});
+        email: "",
+        password: ""
+    });
 
-const navigate = useNavigate();
-const handleChange = (e)=>{
-
-setFormData({
-
-...formData,
-
-[e.target.name]: e.target.value
-
-});
-
-};
-
-const handleSubmit = async(e)=>{
-
-e.preventDefault();
+    const [loading, setLoading] = useState(false);
 
 
-try{
+    const handleChange = (e) => {
+
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+
+    };
 
 
-const response = await 
-axios.post(
+    const handleSubmit = async (e) => {
 
-`${API}/api/users/login`,
+        e.preventDefault();
 
-formData
-
-);
-
-
-console.log(response.data);
+        if (loading) {
+            return;
+        }
 
 
-localStorage.setItem(
-    "token",
-    response.data.token
-);
+        if (!formData.email || !formData.password) {
+
+            alert("Veuillez remplir tous les champs.");
+
+            return;
+
+        }
 
 
-localStorage.setItem(
-    "user",
-    JSON.stringify(response.data.user)
-);
+        try {
+
+            setLoading(true);
 
 
-alert("Connexion réussie");
-
-if (response.data.user.role === "admin") {
-
-    navigate("/admin");
-
-} else {
-
-    navigate("/dashboard");
-
-}
+            const response = await axios.post(
+                `${API}/api/users/login`,
+                formData
+            );
 
 
-}catch(error){
+            console.log(
+                "Réponse connexion :",
+                response.data
+            );
 
 
-console.log(error);
+            /*
+             * IMPORTANT
+             *
+             * On NE sauvegarde PAS encore
+             * le token.
+             *
+             * Le backend doit d'abord
+             * envoyer un code par email.
+             */
 
 
-alert(
-error.response?.data?.message ||
-"Erreur de connexion"
-);
+            localStorage.setItem(
+                "loginVerifyEmail",
+                formData.email
+            );
 
 
-}
+            navigate("/verify-login", {
 
-};
-return(
+                state: {
+                    email: formData.email
+                }
 
-<div className="login-page">
-
-
-<div className="login-box">
+            });
 
 
-<h1>
-🏆 Connexion ArenaFoot
-</h1>
+        } catch (error) {
+
+            console.log(
+                "Erreur connexion :",
+                error
+            );
 
 
-<input
-type="email"
-name="email"
-placeholder="Adresse email"
-value={formData.email}
-onChange={handleChange}
-/>
+            alert(
+                error.response?.data?.message ||
+                "Erreur de connexion"
+            );
 
 
-<input
-type="password"
-name="password"
-placeholder="Mot de passe"
-value={formData.password}
-onChange={handleChange}
-/>
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
 
 
-<button onClick={handleSubmit}>
-Se connecter
-</button>
+    return (
+
+        <div className="login-page">
+
+            <div className="login-box">
+
+                <div className="login-icon">
+                    🔐
+                </div>
 
 
-<button
-  type="button"
-  onClick={() => navigate("/forgot-password")}
-  style={{
-    background: "none",
-    border: "none",
-    color: "#38bdf8",
-    cursor: "pointer"
-  }}>
-
-  Mot de passe oublié ?
-</button>
+                <h1>
+                    Connexion ArenaFoot
+                </h1>
 
 
-</div>
+                <p className="login-description">
+                    Connecte-toi pour accéder
+                    à ton espace joueur.
+                </p>
 
 
-</div>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Adresse email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={loading}
+                />
 
-);
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Mot de passe"
+                    value={formData.password}
+                    onChange={handleChange}
+                    disabled={loading}
+                />
+
+
+                <button
+                    onClick={handleSubmit}
+                    disabled={loading}
+                >
+
+                    {loading
+                        ? "Vérification..."
+                        : "Se connecter"
+                    }
+
+                </button>
+
+
+                <button
+                    type="button"
+                    className="forgot-password"
+                    onClick={() =>
+                        navigate("/forgot-password")
+                    }
+                >
+
+                    Mot de passe oublié ?
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    );
 
 }
 
