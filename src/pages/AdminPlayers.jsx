@@ -1,65 +1,165 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Sidebar from "../components/admin/Sidebar";
+
 import {
     getPlayers,
     getPlayer,
     banPlayer,
     deletePlayer
 } from "../service/adminService";
-import "../styles/admin.css";
 
+import "../styles/admin.css";
 
 function AdminPlayers() {
 
     const [players, setPlayers] = useState([]);
-
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     useEffect(() => {
-    getPlayers().then(data => {
-        console.log("PLAYERS :", data);
-        setPlayers(data);
-    });
-}, []);
+
+        loadPlayers();
+
+    }, []);
 
 
+    const loadPlayers = async () => {
 
-    
-   const handleView = async (id) => {
+        try {
 
-    console.log("ID :", id);
+            setLoading(true);
 
-    const player = await getPlayer(id);
+            const data = await getPlayers();
 
-    console.log(player);
+            setPlayers(
+                Array.isArray(data)
+                    ? data
+                    : []
+            );
 
-};
+        } catch (error) {
+
+            console.error(
+                "Erreur chargement joueurs :",
+                error
+            );
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
 
 
+    const handleView = async (id) => {
 
-const handleBan = async (id) => {
+        try {
 
-    if (!window.confirm("Bannir ce joueur ?")) return;
+            const player = await getPlayer(id);
 
-    const data = await banPlayer(id);
+            setSelectedPlayer(player);
 
-    alert(data.message);
+        } catch (error) {
 
-    getPlayers().then(data => setPlayers(data));
+            console.error(
+                "Erreur récupération joueur :",
+                error
+            );
 
-};
+        }
 
-const handleDelete = async (id) => {
+    };
 
-    if (!window.confirm("Supprimer définitivement ce joueur ?")) return;
 
-    const data = await deletePlayer(id);
+    const handleBan = async (id) => {
 
-    alert(data.message);
+        if (!window.confirm("Bannir ce joueur ?")) {
+            return;
+        }
 
-    getPlayers().then(data => setPlayers(data));
+        try {
 
-};
+            const data = await banPlayer(id);
+
+            alert(data.message);
+
+            loadPlayers();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Erreur lors du bannissement.");
+
+        }
+
+    };
+
+
+    const handleDelete = async (id) => {
+
+        if (
+            !window.confirm(
+                "Supprimer définitivement ce joueur ?"
+            )
+        ) {
+            return;
+        }
+
+        try {
+
+            const data = await deletePlayer(id);
+
+            alert(data.message);
+
+            loadPlayers();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Erreur lors de la suppression.");
+
+        }
+
+    };
+
+
+    const filteredPlayers = useMemo(() => {
+
+        const value =
+            search
+                .toLowerCase()
+                .trim();
+
+        if (!value) {
+            return players;
+        }
+
+        return players.filter((player) =>
+
+            player.name
+                ?.toLowerCase()
+                .includes(value)
+
+            ||
+
+            player.pseudo
+                ?.toLowerCase()
+                .includes(value)
+
+            ||
+
+            player.email
+                ?.toLowerCase()
+                .includes(value)
+
+        );
+
+    }, [players, search]);
 
 
     return (
@@ -68,85 +168,558 @@ const handleDelete = async (id) => {
 
             <Sidebar />
 
-            
 
-            <div className="admin-content">
+            <main className="admin-content players-page">
 
-                <h1>👥 Gestion des joueurs</h1>
+                {/* =================================
+                    HEADER
+                ================================= */}
 
-                <input
-                    type="text"
-                    placeholder="Rechercher un joueur..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="admin-search"
-                />
+                <div className="players-header">
 
-                <table className="admin-table">
+                    <div>
 
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Pseudo</th>
-                            <th>Email</th>
-                            <th>Téléphone</th>
-                            <th>Rôle</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+                        <div className="admin-eyebrow">
+                            ARENAFOOT CONTROL
+                        </div>
 
-                    <tbody>
+                        <h1>
+                            Gestion des joueurs
+                        </h1>
 
-                        {
-                            players
-                        .filter(player =>
-                            player.name?.toLowerCase().includes(search.toLowerCase()) ||
-                            player.pseudo?.toLowerCase().includes(search.toLowerCase()) ||
-                            player.email?.toLowerCase().includes(search.toLowerCase())
-                        )
-                        .map(player => (
+                        <p>
+                            Gérez les comptes et les accès
+                            des joueurs ArenaFoot.
+                        </p>
 
-                                <tr key={player.id}>
+                    </div>
 
-                                    <td>{player.name}</td>
-                                    <td>{player.pseudo}</td>
-                                    <td>{player.email}</td>
-                                    <td>{player.phone}</td>
-                                    <td>{player.role}</td>
 
-                                    <td>
+                    <div className="players-counter">
 
-                                        <button onClick={() => handleView(player.id)}>
-                                            👁 Voir
-                                        </button>
+                        <span>
+                            👥
+                        </span>
 
-                                        <button>✏ Modifier</button>
+                        <div>
 
-                                        <button onClick={() => handleBan(player.id)}>
-                                            🚫 Bannir
-                                        </button>
+                            <strong>
+                                {players.length}
+                            </strong>
 
-                                        <button onClick={() => handleDelete(player.id)}>
-                                            🗑 Supprimer
-                                        </button>
+                            <small>
+                                joueurs
+                            </small>
 
-                                    </td>
+                        </div>
 
-                                </tr>
+                    </div>
 
-                            ))
+                </div>
+
+
+                {/* =================================
+                    STATISTIQUES
+                ================================= */}
+
+                <div className="players-stats">
+
+                    <div className="players-stat-card">
+
+                        <div className="stat-icon blue">
+                            👥
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Total joueurs
+                            </span>
+
+                            <strong>
+                                {players.length}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div className="players-stat-card">
+
+                        <div className="stat-icon green">
+                            🟢
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Comptes joueurs
+                            </span>
+
+                            <strong>
+                                {
+                                    players.filter(
+                                        p => p.role === "player"
+                                    ).length
+                                }
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div className="players-stat-card">
+
+                        <div className="stat-icon purple">
+                            👑
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Administrateurs
+                            </span>
+
+                            <strong>
+                                {
+                                    players.filter(
+                                        p => p.role === "admin"
+                                    ).length
+                                }
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {/* =================================
+                    SEARCH
+                ================================= */}
+
+                <div className="players-toolbar">
+
+                    <div className="players-search">
+
+                        <span>
+                            🔎
+                        </span>
+
+                        <input
+                            type="text"
+                            placeholder="Rechercher un joueur, pseudo ou email..."
+                            value={search}
+                            onChange={(e) =>
+                                setSearch(e.target.value)
+                            }
+                        />
+
+                        {search && (
+
+                            <button
+                                type="button"
+                                onClick={() => setSearch("")}
+                            >
+                                ✕
+                            </button>
+
+                        )}
+
+                    </div>
+
+
+                    <div className="results-count">
+
+                        {filteredPlayers.length}
+                        {" "}
+                        résultat
+                        {filteredPlayers.length > 1
+                            ? "s"
+                            : ""
                         }
 
-                    </tbody>
+                    </div>
 
-                </table>
+                </div>
 
-            </div>
+
+                {/* =================================
+                    TABLEAU
+                ================================= */}
+
+                <section className="players-panel">
+
+                    <div className="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Tous les joueurs
+                            </h2>
+
+                            <p>
+                                Liste des comptes enregistrés
+                            </p>
+
+                        </div>
+
+                        <span className="live-indicator">
+                            <i></i>
+                            En ligne
+                        </span>
+
+                    </div>
+
+
+                    {loading ? (
+
+                        <div className="players-loading">
+
+                            <div className="loading-spinner"></div>
+
+                            <p>
+                                Chargement des joueurs...
+                            </p>
+
+                        </div>
+
+                    ) : filteredPlayers.length === 0 ? (
+
+                        <div className="players-empty">
+
+                            <div>
+                                🔍
+                            </div>
+
+                            <h3>
+                                Aucun joueur trouvé
+                            </h3>
+
+                            <p>
+                                Essayez avec un autre nom,
+                                pseudo ou email.
+                            </p>
+
+                        </div>
+
+                    ) : (
+
+                        <div className="players-table-wrapper">
+
+                            <table className="players-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Joueur
+                                        </th>
+
+                                        <th>
+                                            Email
+                                        </th>
+
+                                        <th>
+                                            Téléphone
+                                        </th>
+
+                                        <th>
+                                            Rôle
+                                        </th>
+
+                                        <th>
+                                            Actions
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    {filteredPlayers.map(
+                                        (player, index) => (
+
+                                            <tr
+                                                key={player.id}
+                                                style={{
+                                                    animationDelay:
+                                                        `${index * 40}ms`
+                                                }}
+                                            >
+
+                                                <td>
+
+                                                    <div className="player-identity">
+
+                                                        <div className="player-avatar">
+
+                                                            {
+                                                                player.pseudo
+                                                                    ?.charAt(0)
+                                                                    ?.toUpperCase()
+                                                                    || "?"
+                                                            }
+
+                                                        </div>
+
+                                                        <div>
+
+                                                            <strong>
+                                                                {
+                                                                    player.name
+                                                                    ||
+                                                                    "Sans nom"
+                                                                }
+                                                            </strong>
+
+                                                            <span>
+                                                                @
+                                                                {
+                                                                    player.pseudo
+                                                                }
+                                                            </span>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <span className="player-email">
+                                                        {player.email}
+                                                    </span>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    {player.phone || "—"}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <span
+                                                        className={
+                                                            player.role === "admin"
+                                                                ? "role-badge admin"
+                                                                : "role-badge player"
+                                                        }
+                                                    >
+
+                                                        {player.role === "admin"
+                                                            ? "👑 Admin"
+                                                            : "🎮 Joueur"
+                                                        }
+
+                                                    </span>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <div className="player-actions">
+
+                                                        <button
+                                                            className="action-view"
+                                                            onClick={() =>
+                                                                handleView(
+                                                                    player.id
+                                                                )
+                                                            }
+                                                        >
+                                                            👁
+                                                            <span>
+                                                                Voir
+                                                            </span>
+                                                        </button>
+
+
+                                                        <button
+                                                            className="action-edit"
+                                                        >
+                                                            ✏️
+                                                            <span>
+                                                                Modifier
+                                                            </span>
+                                                        </button>
+
+
+                                                        <button
+                                                            className="action-ban"
+                                                            onClick={() =>
+                                                                handleBan(
+                                                                    player.id
+                                                                )
+                                                            }
+                                                        >
+                                                            🚫
+                                                            <span>
+                                                                Bannir
+                                                            </span>
+                                                        </button>
+
+
+                                                        <button
+                                                            className="action-delete"
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    player.id
+                                                                )
+                                                            }
+                                                        >
+                                                            🗑️
+                                                        </button>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+
+                                        )
+                                    )}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    )}
+
+                </section>
+
+
+            </main>
+
+
+            {/* =================================
+                MODAL PROFIL
+            ================================= */}
+
+            {selectedPlayer && (
+
+                <div
+                    className="player-modal-overlay"
+                    onClick={() =>
+                        setSelectedPlayer(null)
+                    }
+                >
+
+                    <div
+                        className="player-modal"
+                        onClick={(e) =>
+                            e.stopPropagation()
+                        }
+                    >
+
+                        <button
+                            className="modal-close"
+                            onClick={() =>
+                                setSelectedPlayer(null)
+                            }
+                        >
+                            ✕
+                        </button>
+
+
+                        <div className="modal-avatar">
+
+                            {
+                                selectedPlayer.pseudo
+                                    ?.charAt(0)
+                                    ?.toUpperCase()
+                                    || "?"
+                            }
+
+                        </div>
+
+
+                        <h2>
+                            {selectedPlayer.name}
+                        </h2>
+
+                        <p className="modal-pseudo">
+                            @{selectedPlayer.pseudo}
+                        </p>
+
+
+                        <div className="modal-info">
+
+                            <div>
+                                <span>
+                                    📧 Email
+                                </span>
+
+                                <strong>
+                                    {selectedPlayer.email}
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    📱 Téléphone
+                                </span>
+
+                                <strong>
+                                    {
+                                        selectedPlayer.phone
+                                        || "Non renseigné"
+                                    }
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    🎮 eFootball ID
+                                </span>
+
+                                <strong>
+                                    {
+                                        selectedPlayer.efootball_id
+                                        || "Non renseigné"
+                                    }
+                                </strong>
+                            </div>
+
+
+                            <div>
+                                <span>
+                                    🛡️ Rôle
+                                </span>
+
+                                <strong>
+                                    {selectedPlayer.role}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            )}
 
         </div>
 
     );
-
 
 }
 

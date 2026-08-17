@@ -13,6 +13,8 @@ function AdminLogin() {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const handleSubmit = async (e) => {
 
@@ -35,9 +37,12 @@ function AdminLogin() {
         }
       );
 
-      console.log("Connexion admin :", response.data);
+      console.log(
+        "Connexion admin :",
+        response.data
+      );
 
-      // Enregistrer le token
+
       if (response.data.token) {
 
         localStorage.setItem(
@@ -47,19 +52,26 @@ function AdminLogin() {
 
       }
 
-      // Enregistrer les informations admin
+
       if (response.data.user) {
 
         localStorage.setItem(
           "adminUser",
-          JSON.stringify(response.data.user)
+          JSON.stringify(
+            response.data.user
+          )
         );
 
       }
 
-      alert("Connexion administrateur réussie 🎉");
 
-      navigate("/admin/dashboard");
+      alert(
+        "Connexion administrateur réussie 🎉"
+      );
+
+      navigate(
+        "/admin/dashboard"
+      );
 
     } catch (error) {
 
@@ -86,26 +98,74 @@ function AdminLogin() {
 
     <div className="admin-login-page">
 
+
+      {/* BACKGROUND */}
+
+      <div className="admin-login-background">
+
+        <div className="admin-glow glow-one"></div>
+
+        <div className="admin-glow glow-two"></div>
+
+        <div className="admin-grid"></div>
+
+      </div>
+
+
+
+      {/* LOGIN CARD */}
+
       <div className="admin-login-box">
 
-        <div className="admin-login-icon">
-          🔐
+
+        {/* LOGO */}
+
+        <div className="admin-login-logo">
+
+          <div className="admin-login-icon">
+            👑
+          </div>
+
         </div>
 
+
+        <div className="admin-login-badge">
+
+          <span></span>
+
+          ADMIN CONTROL CENTER
+
+        </div>
+
+
         <h1>
-          ArenaFoot
+          Arena<span>Foot</span>
         </h1>
 
+
         <h2>
-          Administration
+          Espace administrateur
         </h2>
 
+
         <p className="admin-login-description">
-          Connectez-vous à votre espace administrateur.
+
+          Gérez vos tournois, joueurs,
+          paiements et compétitions.
+
         </p>
 
 
-        <form onSubmit={handleSubmit}>
+
+        {/* FORM */}
+
+        <form
+          onSubmit={handleSubmit}
+          className="admin-login-form"
+        >
+
+
+          {/* EMAIL */}
 
           <div className="admin-input-group">
 
@@ -113,63 +173,187 @@ function AdminLogin() {
               Email administrateur
             </label>
 
-            <input
-              type="email"
-              placeholder="admin@arenafoot.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+
+            <div className="admin-input-wrapper">
+
+              <span className="admin-input-icon">
+                ✉️
+              </span>
+
+
+              <input
+                type="email"
+                placeholder="admin@arenafoot.com"
+                value={email}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+                autoComplete="username"
+              />
+
+            </div>
 
           </div>
 
+
+
+          {/* PASSWORD */}
 
           <div className="admin-input-group">
 
-            <label>
-              Mot de passe
-            </label>
+            <div className="admin-password-label">
 
-            <input
-              type="password"
-              placeholder="Votre mot de passe"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+              <label>
+                Mot de passe
+              </label>
+
+              <button
+                type="button"
+                onClick={() =>
+                  navigate(
+                    "/admin/forgot-password"
+                  )
+                }
+              >
+                Mot de passe oublié ?
+              </button>
+
+            </div>
+
+
+            <div className="admin-input-wrapper">
+
+              <span className="admin-input-icon">
+                🔐
+              </span>
+
+
+              <input
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
+                placeholder="Votre mot de passe"
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                autoComplete="current-password"
+              />
+
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowPassword(
+                    !showPassword
+                  )
+                }
+              >
+                {showPassword
+                  ? "🙈"
+                  : "👁️"
+                }
+              </button>
+
+            </div>
 
           </div>
 
 
+
+          {/* LOGIN BUTTON */}
+
           <button
             type="submit"
+            className="admin-login-submit"
             disabled={loading}
           >
 
-            {loading
-              ? "Connexion..."
-              : "Se connecter"
-            }
+            {loading ? (
+
+              <>
+
+                <span className="login-spinner"></span>
+
+                Connexion...
+
+              </>
+
+            ) : (
+
+              <>
+
+                Accéder au dashboard
+
+                <span>
+                  →
+                </span>
+
+              </>
+
+            )}
 
           </button>
+
 
         </form>
 
 
-        <button
-          className="admin-forgot-button"
-          onClick={() => navigate("/admin/forgot-password")}
-        >
-          Mot de passe oublié ?
-        </button>
 
+        {/* SECURITY */}
+
+        <div className="admin-security">
+
+          <span>
+            🛡️
+          </span>
+
+          <div>
+
+            <strong>
+              Connexion sécurisée
+            </strong>
+
+            <p>
+              Accès réservé aux administrateurs ArenaFoot.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        {/* BACK */}
 
         <button
           className="admin-back-button"
-          onClick={() => navigate("/")}
+          onClick={() =>
+            navigate("/")
+          }
         >
+
           ← Retour à ArenaFoot
+
         </button>
 
+
       </div>
+
+
+      {/* FOOTER */}
+
+      <div className="admin-login-footer">
+
+        ArenaFoot Administration
+        <span>•</span>
+        Secure Access
+
+      </div>
+
 
     </div>
 

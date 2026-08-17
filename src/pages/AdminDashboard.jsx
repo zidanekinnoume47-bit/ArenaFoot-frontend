@@ -10,6 +10,7 @@ import {
 
 import Sidebar from "../components/admin/Sidebar";
 import DashboardCards from "../components/admin/DashboardCards";
+import { Link } from "react-router-dom";
 
 function AdminDashboard() {
   const [players, setPlayers] = useState([]);
@@ -87,6 +88,22 @@ function AdminDashboard() {
 <div className="admin-content">
           <h1>👑 ArenaFoot Admin</h1>
 
+          <Link
+  to="/admin/create-tournament"
+  style={{
+    display: "inline-block",
+    marginBottom: "25px",
+    padding: "12px 20px",
+    background: "#2563EB",
+    color: "white",
+    textDecoration: "none",
+    borderRadius: "8px",
+    fontWeight: "bold"
+  }}
+>
+  ➕ Créer un tournoi
+</Link>
+
         <DashboardCards
           players={players}
           tournaments={tournaments}
@@ -103,8 +120,7 @@ function AdminDashboard() {
           const tournamentPayments = payments.filter(
             (p) => (p.tournament === t.name || p.tournament_id === t.id) && p.status === "success"
           );
-          const isFull = tournamentPayments.length >= 16;
-
+const isFull = tournamentPayments.length >= (t.players_limit || 16);
           return (
             <div
               key={t.id}
@@ -114,16 +130,15 @@ function AdminDashboard() {
               <h3>{t.name}</h3>
                 {isFull && (
                 <span className="full-badge">
-                    FULL (16/16)
-                  </span>
+    FULL ({t.players_limit}/{t.players_limit})
+</span>
                 )}
               </div>
 
               <p>Participation : {t.entry_fee} FCFA</p>
               <p>Récompense : {t.reward} FCFA</p>
               <p className={`payment-count ${isFull ? "payment-full" : ""}`}>                
-                Paiements validés : {tournamentPayments.length} / 16
-
+Paiements validés : {tournamentPayments.length} / {t.players_limit || 16}
               </p>
 
               <div className="tournament-actions">                

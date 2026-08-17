@@ -93,6 +93,20 @@ export const deleteTournament = async (id) => {
   return await response.json();
 };
 
+export const createTournament = async (tournamentData) => {
+
+  const response = await fetch(
+    `${API}/tournament`,
+    {
+      method: "POST",
+      headers: getAdminHeaders(),
+      body: JSON.stringify(tournamentData)
+    }
+  );
+
+  return await response.json();
+};
+
 
 export const getTournamentPlayers = async (id) => {
 

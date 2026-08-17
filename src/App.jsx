@@ -35,6 +35,7 @@ import AdminVerifyResetCode from "./components/admin/AdminVerifyResetCode";
 import AdminResetPassword from "./components/admin/AdminResetPassword";
 import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
 import VerifyLogin from "./pages/VerifyLogin";
+import CreateTournament from "./pages/CreateTournament";
 
 
 
@@ -63,6 +64,8 @@ function App() {
           <Route path="/admin/players" element={<AdminPlayers />} />
 
           <Route path="/admin/tournaments" element={<AdminTournaments />} />
+
+          <Route path="/admin/create-tournament"element={<CreateTournament />}/>
 
           <Route path="/admin/rewards" element={<AdminRewards />} />
 

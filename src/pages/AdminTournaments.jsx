@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/admin/Sidebar";
+
 import {
   getTournaments,
   deleteTournament,
@@ -8,326 +9,1291 @@ import {
   generateBracket
 } from "../service/adminService";
 
+import "../styles/admin.css";
+
 function AdminTournaments() {
+
   const [tournaments, setTournaments] = useState([]);
   const [players, setPlayers] = useState([]);
   const [matches, setMatches] = useState([]);
+
   const [selectedTournament, setSelectedTournament] = useState(null);
-  const [viewMode, setViewMode] = useState(null); // 'players' ou 'bracket'
+  const [viewMode, setViewMode] = useState(null);
+
   const [loadingTournamentId, setLoadingTournamentId] = useState(null);
   const [bracketLoadingId, setBracketLoadingId] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     loadTournaments();
   }, []);
 
+
   const loadTournaments = async () => {
-    const data = await getTournaments();
-    setTournaments(Array.isArray(data) ? data : []);
+
+    try {
+
+      setLoading(true);
+
+      const data = await getTournaments();
+
+      setTournaments(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Erreur chargement tournois :",
+        error
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
   };
+
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Supprimer ce tournoi ?")) return;
 
-    const data = await deleteTournament(id);
+    if (
+      !window.confirm(
+        "Supprimer définitivement ce tournoi ?"
+      )
+    ) {
+      return;
+    }
 
-    alert(data.message);
 
-    loadTournaments();
+    try {
+
+      const data =
+        await deleteTournament(id);
+
+      alert(
+        data.message ||
+        "Tournoi supprimé."
+      );
+
+      if (selectedTournament === id) {
+
+        setSelectedTournament(null);
+        setViewMode(null);
+        setPlayers([]);
+        setMatches([]);
+
+      }
+
+      await loadTournaments();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Impossible de supprimer le tournoi."
+      );
+
+    }
+
   };
+
 
   const handlePlayers = async (id) => {
-    console.log("Tournoi :", id);
 
-    const data = await getTournamentPlayers(id);
+    try {
 
-    console.log("JOUEURS :", data);
+      const data =
+        await getTournamentPlayers(id);
 
-    setPlayers(Array.isArray(data) ? data : []);
+      setPlayers(
+        Array.isArray(data)
+          ? data
+          : []
+      );
 
-    setSelectedTournament(id);
-    setViewMode("players");
+      setSelectedTournament(id);
+
+      setViewMode("players");
+
+    } catch (error) {
+
+      console.error(
+        "Erreur participants :",
+        error
+      );
+
+      alert(
+        "Impossible de charger les participants."
+      );
+
+    }
+
   };
 
-  // Charger et afficher les matchs du tournoi
+
   const handleShowBracket = async (id) => {
+
     try {
-      const token = localStorage.getItem("token");
+
+      const token =
+        localStorage.getItem("adminToken") ||
+        localStorage.getItem("token");
+
+
       const response = await fetch(
         `https://arenafoot-backend-production.up.railway.app/api/admin/tournament/${id}/bracket`,
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
         }
       );
-      const data = await response.json();
-      setMatches(Array.isArray(data) ? data : []);
-      setSelectedTournament(id);
-      setViewMode("bracket");
-    } catch (err) {
-      console.error("Erreur chargement bracket :", err);
-    }
-  };
 
-  // Fonction pour injecter 15 joueurs de test payés
-  const handleAddTestPlayers = async (tournamentId) => {
-    if (
-      !window.confirm(
-        "Voulez-vous simuler l'ajout de 15 joueurs de test payés pour ce tournoi ?"
-      )
-    ) {
-      return;
-    }
 
-    setLoadingTournamentId(tournamentId);
+      if (!response.ok) {
 
-    try {
-      const res = await createTestPlayers(tournamentId);
-      alert(res.message || "Joueurs de test ajoutés avec succès ! 🏆");
-      
-      // Recharger la liste des joueurs si ce tournoi était ouvert
-      await handlePlayers(tournamentId);
-      await loadTournaments();
-    } catch (err) {
-      console.error("Erreur simulation :", err);
-      alert("❌ Une erreur est survenue lors de l'ajout des joueurs.");
-    } finally {
-      setLoadingTournamentId(null);
-    }
-  };
+        throw new Error(
+          "Erreur récupération bracket"
+        );
 
-  // Fonction pour déclencher la génération automatique du Bracket (16 joueurs)
-  const handleGenerateBracket = async (tournamentId) => {
-    if (
-      !window.confirm(
-        "Générer le tirage au sort et les 8 matchs de 1/8ème de finale pour ce tournoi ?"
-      )
-    ) {
-      return;
-    }
-
-    setBracketLoadingId(tournamentId);
-
-    try {
-      const res = await generateBracket(tournamentId);
-      if (res.message) {
-        alert(res.message);
-      } else {
-        alert("❌ Impossible de générer le bracket.");
       }
-      await handleShowBracket(tournamentId);
-      loadTournaments();
-    } catch (err) {
-      console.error("Erreur génération bracket :", err);
-      alert("❌ Une erreur est survenue lors de la génération du bracket.");
-    } finally {
-      setBracketLoadingId(null);
+
+
+      const data =
+        await response.json();
+
+
+      setMatches(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+      setSelectedTournament(id);
+
+      setViewMode("bracket");
+
+    } catch (error) {
+
+      console.error(
+        "Erreur chargement bracket :",
+        error
+      );
+
+      alert(
+        "Impossible de charger le bracket."
+      );
+
     }
+
   };
+
+
+  const handleAddTestPlayers = async (
+    tournamentId
+  ) => {
+
+    if (
+      !window.confirm(
+        "Simuler l'ajout de 15 joueurs test payés ?"
+      )
+    ) {
+      return;
+    }
+
+
+    setLoadingTournamentId(
+      tournamentId
+    );
+
+
+    try {
+
+      const res =
+        await createTestPlayers(
+          tournamentId
+        );
+
+
+      alert(
+        res.message ||
+        "Joueurs test ajoutés !"
+      );
+
+
+      await handlePlayers(
+        tournamentId
+      );
+
+      await loadTournaments();
+
+    } catch (error) {
+
+      console.error(
+        "Erreur simulation :",
+        error
+      );
+
+      alert(
+        "Une erreur est survenue."
+      );
+
+    } finally {
+
+      setLoadingTournamentId(null);
+
+    }
+
+  };
+
+
+  const handleGenerateBracket = async (
+    tournamentId
+  ) => {
+
+    if (
+      !window.confirm(
+        "Générer le tirage au sort et les matchs du tournoi ?"
+      )
+    ) {
+      return;
+    }
+
+
+    setBracketLoadingId(
+      tournamentId
+    );
+
+
+    try {
+
+      const res =
+        await generateBracket(
+          tournamentId
+        );
+
+
+      alert(
+        res.message ||
+        "Bracket généré avec succès !"
+      );
+
+
+      await handleShowBracket(
+        tournamentId
+      );
+
+      await loadTournaments();
+
+    } catch (error) {
+
+      console.error(
+        "Erreur génération bracket :",
+        error
+      );
+
+      alert(
+        "Impossible de générer le bracket."
+      );
+
+    } finally {
+
+      setBracketLoadingId(null);
+
+    }
+
+  };
+
+
+  const closePanel = () => {
+
+    setSelectedTournament(null);
+
+    setViewMode(null);
+
+    setPlayers([]);
+
+    setMatches([]);
+
+  };
+
+
+  const selectedTournamentData =
+    tournaments.find(
+      t => t.id === selectedTournament
+    );
+
+
+  if (loading) {
+
+    return (
+
+      <div className="admin-page">
+
+        <Sidebar />
+
+        <main className="admin-content tournaments-admin-page">
+
+          <div className="tournaments-loading">
+
+            <div className="loading-spinner"></div>
+
+            <p>
+              Chargement des tournois...
+            </p>
+
+          </div>
+
+        </main>
+
+      </div>
+
+    );
+
+  }
+
 
   return (
+
     <div className="admin-page">
+
       <Sidebar />
 
-      <div style={{ marginLeft: "280px", padding: "20px" }}>
-        <h1>🏆 Gestion des tournois</h1>
 
-        {tournaments.map((t) => {
-          // Compter les joueurs inscrits si les participants sont chargés
-          const isSelected = selectedTournament === t.id;
-          const paidCount = isSelected && viewMode === "players"
-            ? players.filter((p) => p.payment_status === "paid").length
-            : null;
-          const isFull = paidCount !== null && paidCount >= 16;
+      <main className="admin-content tournaments-admin-page">
 
-          return (
-            <div
-              key={t.id}
-              style={{
-                border: isFull ? "2px solid #ef4444" : "1px solid #ddd",
-                padding: "15px",
-                marginBottom: "15px",
-                borderRadius: "8px",
-                backgroundColor: isFull ? "#fef2f2" : "#ffffff"
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3>{t.name}</h3>
-                {isFull && (
-                  <span
+
+        {/* HEADER */}
+
+        <div className="tournaments-admin-header">
+
+          <div>
+
+            <div className="admin-eyebrow">
+              ARENAFOOT TOURNAMENT CONTROL
+            </div>
+
+            <h1>
+              🏆 Gestion des tournois
+            </h1>
+
+            <p>
+              Gérez les inscriptions,
+              participants et brackets.
+            </p>
+
+          </div>
+
+
+          <button
+            className="tournament-refresh-button"
+            onClick={loadTournaments}
+          >
+            ↻ Actualiser
+          </button>
+
+        </div>
+
+
+        {/* STATS */}
+
+        <div className="tournament-admin-stats">
+
+
+          <div className="tournament-stat">
+
+            <div className="tournament-stat-icon blue">
+              🏆
+            </div>
+
+            <div>
+
+              <span>
+                Tournois
+              </span>
+
+              <strong>
+                {tournaments.length}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div className="tournament-stat">
+
+            <div className="tournament-stat-icon green">
+              🟢
+            </div>
+
+            <div>
+
+              <span>
+                Ouverts
+              </span>
+
+              <strong>
+                {
+                  tournaments.filter(
+                    t => t.status === "open"
+                  ).length
+                }
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div className="tournament-stat">
+
+            <div className="tournament-stat-icon orange">
+              👥
+            </div>
+
+            <div>
+
+              <span>
+                Capacité totale
+              </span>
+
+              <strong>
+                {
+                  tournaments.reduce(
+                    (total, t) =>
+                      total +
+                      Number(
+                        t.players_limit || 0
+                      ),
+                    0
+                  )
+                }
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div className="tournament-stat">
+
+            <div className="tournament-stat-icon purple">
+              💰
+            </div>
+
+            <div>
+
+              <span>
+                Participation moyenne
+              </span>
+
+              <strong>
+                {
+                  tournaments.length
+                    ? Math.round(
+                        tournaments.reduce(
+                          (total, t) =>
+                            total +
+                            Number(
+                              t.entry_fee || 0
+                            ),
+                          0
+                        ) /
+                        tournaments.length
+                      )
+                    : 0
+                }
+                <small> FCFA</small>
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* EMPTY */}
+
+        {tournaments.length === 0 ? (
+
+          <div className="tournaments-empty">
+
+            <div className="tournaments-empty-icon">
+              🏆
+            </div>
+
+            <h2>
+              Aucun tournoi
+            </h2>
+
+            <p>
+              Aucun tournoi n'est actuellement
+              disponible.
+            </p>
+
+          </div>
+
+        ) : (
+
+          <div className="tournaments-admin-grid">
+
+            {tournaments.map(
+              (tournament, index) => {
+
+                const limit =
+                  Number(
+                    tournament.players_limit ||
+                    16
+                  );
+
+
+                const isSelected =
+                  selectedTournament ===
+                  tournament.id;
+
+
+                const isFull =
+                  tournament.status === "full";
+
+
+                const statusClass =
+                  tournament.status ===
+                  "open"
+                    ? "open"
+                    : tournament.status ===
+                      "finished"
+                      ? "finished"
+                      : isFull
+                        ? "full"
+                        : "pending";
+
+
+                return (
+
+                  <article
+                    key={tournament.id}
+                    className={
+                      `tournament-admin-premium-card ${
+                        isSelected
+                          ? "selected"
+                          : ""
+                      }`
+                    }
                     style={{
-                      backgroundColor: "#ef4444",
-                      color: "white",
-                      padding: "4px 8px",
-                      borderRadius: "4px",
-                      fontWeight: "bold",
-                      fontSize: "0.85rem"
+                      animationDelay:
+                        `${index * 60}ms`
                     }}
                   >
-                    COMPLET (16/16)
-                  </span>
-                )}
-              </div>
 
-              <p>Participation : {t.entry_fee} FCFA</p>
 
-              <p>Récompense : {t.reward} FCFA</p>
+                    {/* TOP */}
 
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "10px" }}>
-                <button onClick={() => handlePlayers(t.id)}>
-                  👥 Participants {isSelected && viewMode === "players" ? `(${players.length})` : ""}
-                </button>
+                    <div className="tournament-card-top">
 
-                <button
-                  onClick={() => handleShowBracket(t.id)}
-                  style={{ backgroundColor: "#2563eb", color: "white", border: "none", borderRadius: "4px", padding: "8px 12px", cursor: "pointer" }}
-                >
-                  👁 Voir le Bracket
-                </button>
+                      <div className="tournament-card-title">
 
-                {/* BOUTON DE GENERATION DU BRACKET */}
-                <button
-                  onClick={() => handleGenerateBracket(t.id)}
-                  disabled={bracketLoadingId === t.id}
-                  style={{
-                    backgroundColor: "#16a34a",
-                    color: "white",
-                    border: "none",
-                    padding: "8px 12px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    fontWeight: "bold"
-                  }}
-                >
-                  {bracketLoadingId === t.id ? "⏳ Tirage..." : "🏆 Générer Bracket"}
-                </button>
+                        <div className="tournament-mini-icon">
+                          🏆
+                        </div>
 
-                <button>✏ Modifier</button>
+                        <div>
 
-                {/* BOUTON TEST POUR INJECTER LES 15 JOUEURS */}
-                <button
-                  onClick={() => handleAddTestPlayers(t.id)}
-                  disabled={loadingTournamentId === t.id}
-                  style={{
-                    backgroundColor: "#8b5cf6",
-                    color: "white",
-                    border: "none",
-                    padding: "8px 12px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    fontWeight: "bold"
-                  }}
-                >
-                  {loadingTournamentId === t.id
-                    ? "⏳ Inscription en cours..."
-                    : "🧪 Ajouter 15 Joueurs Test"}
-                </button>
+                          <h2>
+                            {tournament.name}
+                          </h2>
 
-                <button
-                  onClick={() => handleDelete(t.id)}
-                  style={{ backgroundColor: "#dc2626", color: "white", border: "none", borderRadius: "4px" }}
-                >
-                  🗑 Supprimer
-                </button>
-              </div>
+                          <span>
+                            Tournoi #{tournament.id}
+                          </span>
 
-              {/* TABLEAU DES PARTICIPANTS */}
-              {isSelected && viewMode === "players" && (
-                <div style={{ marginTop: "20px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <h3>
-                      Participants ({players.length}/16)
-                    </h3>
-                    <span
-                      style={{
-                        fontWeight: "bold",
-                        color: paidCount >= 16 ? "#dc2626" : "#16a34a"
-                      }}
-                    >
-                      {paidCount} Joueurs Payés
-                    </span>
+                        </div>
+
+                      </div>
+
+
+                      <span
+                        className={
+                          `tournament-status-badge ${statusClass}`
+                        }
+                      >
+
+                        {tournament.status ===
+                        "open"
+                          ? "🟢 Ouvert"
+                          : tournament.status ===
+                            "finished"
+                            ? "🏁 Terminé"
+                            : isFull
+                              ? "🔴 Complet"
+                              : "🟡 En attente"}
+
+                      </span>
+
+                    </div>
+
+
+                    {/* DESCRIPTION */}
+
+                    {tournament.description && (
+
+                      <p className="tournament-description">
+
+                        {tournament.description}
+
+                      </p>
+
+                    )}
+
+
+                    {/* MONEY */}
+
+                    <div className="tournament-money-grid">
+
+
+                      <div>
+
+                        <span>
+                          Participation
+                        </span>
+
+                        <strong>
+                          {tournament.entry_fee}
+                          <small>
+                            FCFA
+                          </small>
+                        </strong>
+
+                      </div>
+
+
+                      <div>
+
+                        <span>
+                          Récompense
+                        </span>
+
+                        <strong className="reward">
+                          {tournament.reward}
+                          <small>
+                            FCFA
+                          </small>
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* PROGRESSION */}
+
+                    <div className="tournament-progress-area">
+
+                      <div className="tournament-progress-header">
+
+                        <span>
+                          👥 Participants
+                        </span>
+
+                        <strong>
+                          {isSelected &&
+                          viewMode ===
+                            "players"
+                            ? players.length
+                            : tournament.players_count ||
+                              0}
+                          {" / "}
+                          {limit}
+                        </strong>
+
+                      </div>
+
+
+                      <div className="tournament-progress">
+
+                        <span
+                          style={{
+                            width:
+                              `${
+                                Math.min(
+                                  100,
+                                  (
+                                    (
+                                      isSelected &&
+                                      viewMode ===
+                                        "players"
+                                    )
+                                      ? players.length
+                                      : tournament.players_count ||
+                                        0
+                                  ) /
+                                  limit *
+                                  100
+                                )
+                              }%`
+                          }}
+                        />
+
+                      </div>
+
+                    </div>
+
+
+                    {/* ACTIONS */}
+
+                    <div className="tournament-premium-actions">
+
+
+                      <button
+                        className="action-blue"
+                        onClick={() =>
+                          handlePlayers(
+                            tournament.id
+                          )
+                        }
+                      >
+                        👥 Participants
+                      </button>
+
+
+                      <button
+                        className="action-purple"
+                        onClick={() =>
+                          handleShowBracket(
+                            tournament.id
+                          )
+                        }
+                      >
+                        🌳 Bracket
+                      </button>
+
+
+                      <button
+                        className="action-green"
+                        onClick={() =>
+                          handleGenerateBracket(
+                            tournament.id
+                          )
+                        }
+                        disabled={
+                          bracketLoadingId ===
+                          tournament.id
+                        }
+                      >
+                        {
+                          bracketLoadingId ===
+                          tournament.id
+                            ? "⏳ Tirage..."
+                            : "🏆 Générer"
+                        }
+                      </button>
+
+
+                      <button
+                        className="action-violet"
+                        onClick={() =>
+                          handleAddTestPlayers(
+                            tournament.id
+                          )
+                        }
+                        disabled={
+                          loadingTournamentId ===
+                          tournament.id
+                        }
+                      >
+                        {
+                          loadingTournamentId ===
+                          tournament.id
+                            ? "⏳..."
+                            : "🧪 +15 Test"
+                        }
+                      </button>
+
+
+                      <button
+                        className="action-edit"
+                      >
+                        ✏️ Modifier
+                      </button>
+
+
+                      <button
+                        className="action-delete"
+                        onClick={() =>
+                          handleDelete(
+                            tournament.id
+                          )
+                        }
+                      >
+                        🗑️ Supprimer
+                      </button>
+
+                    </div>
+
+
+                  </article>
+
+                );
+
+              }
+            )}
+
+          </div>
+
+        )}
+
+
+        {/* =================================
+            DETAIL PANEL
+        ================================= */}
+
+        {selectedTournament && (
+
+          <div
+            className="tournament-detail-overlay"
+            onClick={closePanel}
+          >
+
+            <section
+              className="tournament-detail-panel"
+              onClick={(e) =>
+                e.stopPropagation()
+              }
+            >
+
+
+              <button
+                className="tournament-detail-close"
+                onClick={closePanel}
+              >
+                ✕
+              </button>
+
+
+              {/* PANEL HEADER */}
+
+              <div className="tournament-detail-header">
+
+                <div>
+
+                  <div className="admin-eyebrow">
+                    TOURNAMENT CONTROL
                   </div>
 
-                  <table className="admin-table" style={{ width: "100%", marginTop: "10px" }}>
-                    <thead>
-                      <tr>
-                        <th>Nom</th>
-                        <th>Pseudo</th>
-                        <th>Téléphone</th>
-                        <th>Paiement</th>
-                      </tr>
-                    </thead>
+                  <h2>
+                    🏆{" "}
+                    {
+                      selectedTournamentData?.name
+                    }
+                  </h2>
 
-                    <tbody>
-                      {players.map((p) => (
-                        <tr key={p.id}>
-                          <td>{p.name}</td>
-                          <td>{p.pseudo}</td>
-                          <td>{p.phone}</td>
-                          <td>
-                            <span
-                              style={{
-                                padding: "3px 8px",
-                                borderRadius: "4px",
-                                backgroundColor:
-                                  p.payment_status === "paid"
-                                    ? "#dcfce7"
-                                    : "#fef3c7",
-                                color:
-                                  p.payment_status === "paid"
-                                    ? "#166534"
-                                    : "#92400e",
-                                fontWeight: "bold"
-                              }}
-                            >
-                              {p.payment_status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
                 </div>
-              )}
 
-              {/* ARBRE DU TOURNOI (MATCHS) */}
-              {isSelected && viewMode === "bracket" && (
-                <div style={{ marginTop: "20px" }}>
-                  <h3>🏆 Arbre du Tournoi - 1/8ème de Finale ({matches.length} Matchs)</h3>
-                  {matches.length === 0 ? (
-                    <p style={{ color: "#666" }}>Aucun match n'a encore été généré. Cliquez sur "🏆 Générer Bracket".</p>
-                  ) : (
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "15px", marginTop: "15px" }}>
-                      {matches.map((m, index) => (
-                        <div
-                          key={m.id}
-                          style={{
-                            border: "1px solid #3b82f6",
-                            borderRadius: "8px",
-                            padding: "12px",
-                            backgroundColor: "#eff6ff"
-                          }}
-                        >
-                          <h4 style={{ margin: "0 0 10px 0", color: "#1d4ed8" }}>Match {index + 1}</h4>
-                          <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold" }}>
-                            <span>{m.player_one_pseudo || "En attente"}</span>
-                            <span>VS</span>
-                            <span>{m.player_two_pseudo || "En attente"}</span>
-                          </div>
-                          <div style={{ marginTop: "8px", fontSize: "0.85rem", color: "#6b7280" }}>
-                            Statut : {m.status === "pending" ? "⏳ En attente" : m.status}
-                          </div>
-                        </div>
-                      ))}
+
+                <div className="tournament-detail-switch">
+
+                  <button
+                    className={
+                      viewMode ===
+                      "players"
+                        ? "active"
+                        : ""
+                    }
+                    onClick={() =>
+                      handlePlayers(
+                        selectedTournament
+                      )
+                    }
+                  >
+                    👥 Participants
+                  </button>
+
+
+                  <button
+                    className={
+                      viewMode ===
+                      "bracket"
+                        ? "active"
+                        : ""
+                    }
+                    onClick={() =>
+                      handleShowBracket(
+                        selectedTournament
+                      )
+                    }
+                  >
+                    🌳 Bracket
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              {/* PARTICIPANTS */}
+
+              {viewMode === "players" && (
+
+                <div className="tournament-detail-content">
+
+
+                  <div className="detail-summary">
+
+                    <div>
+
+                      <span>
+                        Participants
+                      </span>
+
+                      <strong>
+                        {players.length}
+                        /
+                        {
+                          selectedTournamentData?.players_limit ||
+                          16
+                        }
+                      </strong>
+
                     </div>
-                  )}
+
+
+                    <div>
+
+                      <span>
+                        Payés
+                      </span>
+
+                      <strong className="paid-number">
+
+                        {
+                          players.filter(
+                            p =>
+                              p.payment_status ===
+                              "paid"
+                          ).length
+                        }
+
+                      </strong>
+
+                    </div>
+
+
+                    <div>
+
+                      <span>
+                        En attente
+                      </span>
+
+                      <strong>
+
+                        {
+                          players.filter(
+                            p =>
+                              p.payment_status !==
+                              "paid"
+                          ).length
+                        }
+
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="participants-list">
+
+
+                    {players.length === 0 ? (
+
+                      <div className="detail-empty">
+
+                        <span>
+                          👥
+                        </span>
+
+                        <p>
+                          Aucun participant.
+                        </p>
+
+                      </div>
+
+                    ) : (
+
+                      players.map(
+                        (player, index) => (
+
+                          <div
+                            key={player.id}
+                            className="participant-row"
+                            style={{
+                              animationDelay:
+                                `${index * 35}ms`
+                            }}
+                          >
+
+                            <div className="participant-number">
+                              {index + 1}
+                            </div>
+
+
+                            <div className="participant-avatar">
+
+                              {
+                                player.name
+                                  ?.charAt(0)
+                                  ?.toUpperCase()
+                                || "?"
+                              }
+
+                            </div>
+
+
+                            <div className="participant-info">
+
+                              <strong>
+                                {player.name}
+                              </strong>
+
+                              <span>
+                                @{player.pseudo}
+                              </span>
+
+                            </div>
+
+
+                            <div className="participant-phone">
+                              📱 {player.phone}
+                            </div>
+
+
+                            <span
+                              className={
+                                `participant-payment ${
+                                  player.payment_status ===
+                                  "paid"
+                                    ? "paid"
+                                    : "waiting"
+                                }`
+                              }
+                            >
+
+                              {
+                                player.payment_status ===
+                                "paid"
+                                  ? "✓ Payé"
+                                  : "⏳ En attente"
+                              }
+
+                            </span>
+
+                          </div>
+
+                        )
+                      )
+
+                    )}
+
+                  </div>
+
                 </div>
+
               )}
-            </div>
-          );
-        })}
-      </div>
+
+
+              {/* BRACKET */}
+
+              {viewMode === "bracket" && (
+
+                <div className="tournament-detail-content">
+
+
+                  <div className="bracket-header">
+
+                    <div>
+
+                      <h3>
+                        🌳 Arbre du tournoi
+                      </h3>
+
+                      <p>
+                        {matches.length}
+                        {" "}
+                        matchs générés
+                      </p>
+
+                    </div>
+
+
+                    <button
+                      className="generate-bracket-detail"
+                      onClick={() =>
+                        handleGenerateBracket(
+                          selectedTournament
+                        )
+                      }
+                      disabled={
+                        bracketLoadingId ===
+                        selectedTournament
+                      }
+                    >
+                      {
+                        bracketLoadingId ===
+                        selectedTournament
+                          ? "⏳ Génération..."
+                          : "🏆 Générer le bracket"
+                      }
+                    </button>
+
+                  </div>
+
+
+                  {matches.length === 0 ? (
+
+                    <div className="detail-empty">
+
+                      <span>
+                        🌳
+                      </span>
+
+                      <h3>
+                        Aucun match généré
+                      </h3>
+
+                      <p>
+                        Génère le bracket
+                        pour commencer
+                        la compétition.
+                      </p>
+
+                    </div>
+
+                  ) : (
+
+                    <div className="admin-bracket-grid">
+
+                      {matches.map(
+                        (match, index) => (
+
+                          <div
+                            key={match.id}
+                            className="admin-bracket-match"
+                            style={{
+                              animationDelay:
+                                `${index * 45}ms`
+                            }}
+                          >
+
+                            <div className="bracket-match-top">
+
+                              <span>
+                                MATCH {index + 1}
+                              </span>
+
+                              <span>
+                                {
+                                  match.status ===
+                                  "pending"
+                                    ? "⏳"
+                                    : "⚽"
+                                }
+                              </span>
+
+                            </div>
+
+
+                            <div className="bracket-player">
+
+                              <span>
+                                {
+                                  match.player_one_pseudo ||
+                                  "En attente"
+                                }
+                              </span>
+
+                              <strong>
+                                {
+                                  match.player_one_pseudo
+                                    ? "?"
+                                    : "-"
+                                }
+                              </strong>
+
+                            </div>
+
+
+                            <div className="bracket-vs">
+                              VS
+                            </div>
+
+
+                            <div className="bracket-player">
+
+                              <span>
+                                {
+                                  match.player_two_pseudo ||
+                                  "En attente"
+                                }
+                              </span>
+
+                              <strong>
+                                {
+                                  match.player_two_pseudo
+                                    ? "?"
+                                    : "-"
+                                }
+                              </strong>
+
+                            </div>
+
+
+                            <div className="bracket-match-status">
+
+                              📌{" "}
+                              {
+                                match.status ===
+                                "pending"
+                                  ? "En attente"
+                                  : match.status
+                              }
+
+                            </div>
+
+                          </div>
+
+                        )
+                      )}
+
+                    </div>
+
+                  )}
+
+                </div>
+
+              )}
+
+            </section>
+
+          </div>
+
+        )}
+
+      </main>
+
     </div>
+
   );
+
 }
 
 export default AdminTournaments;
