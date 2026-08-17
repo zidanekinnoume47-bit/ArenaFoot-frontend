@@ -1,30 +1,39 @@
 /* =========================================
-   NAVBAR ARENAFOOT
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   NAVBAR
 ========================================= */
 
 .navbar {
     position: fixed;
+
     top: 0;
     left: 0;
 
     width: 100%;
-    height: 68px;
+    height: 75px;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
     padding: 0 35px;
 
-    background: rgba(2, 6, 23, 0.96);
+    background: #020617;
 
     border-bottom: 1px solid #1e293b;
 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-
     z-index: 1000;
 
-    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 }
 
 
@@ -33,27 +42,36 @@
 ========================================= */
 
 .navbar-logo {
+
     display: flex;
     align-items: center;
-    gap: 7px;
+
+    gap: 8px;
+
+    color: white;
 
     text-decoration: none;
 
     flex-shrink: 0;
 }
 
+
 .logo-trophy {
-    font-size: 25px;
+    font-size: 30px;
 }
+
 
 .logo-text {
-    color: white;
 
-    font-size: 23px;
+    font-size: 27px;
+
     font-weight: 800;
 
-    letter-spacing: -0.5px;
+    color: white;
+
+    white-space: nowrap;
 }
+
 
 .logo-text span {
     color: #22c55e;
@@ -65,59 +83,53 @@
 ========================================= */
 
 .nav-links {
+
+    margin-left: auto;
+
     display: flex;
+
     align-items: center;
 
-    gap: 8px;
+    gap: 18px;
 
     list-style: none;
-
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links li {
-    margin: 0;
-    padding: 0;
 
     white-space: nowrap;
 }
 
 
-/* =========================================
-   LIENS
-========================================= */
-
-.nav-links li > a {
+.nav-links li {
     display: flex;
     align-items: center;
-    justify-content: center;
+}
+
+
+.nav-links a {
+
+    display: flex;
+
+    align-items: center;
 
     gap: 6px;
 
-    padding: 9px 11px;
-
-    color: #cbd5e1;
+    color: #e2e8f0;
 
     text-decoration: none;
 
-    font-size: 14px;
+    font-size: 15px;
+
     font-weight: 600;
 
-    border-radius: 8px;
+    padding: 8px 6px;
 
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+    transition: 0.25s ease;
 }
 
-.nav-links li > a:hover {
-    color: white;
 
-    background: #1e293b;
+.nav-links a:hover {
 
-    transform: translateY(-1px);
+    color: #22c55e;
+
 }
 
 
@@ -126,51 +138,46 @@
 ========================================= */
 
 .dashboard-link {
-    color: #60a5fa !important;
-}
 
-.dashboard-link:hover {
-    color: white !important;
-
-    background: rgba(37, 99, 235, 0.2) !important;
+    color: #38bdf8 !important;
 }
 
 
 /* =========================================
-   PROFIL UTILISATEUR
+   PROFIL
 ========================================= */
 
 .user-profile {
-    max-width: 145px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    max-width: 130px;
 
     overflow: hidden;
 
-    text-overflow: ellipsis;
 }
 
+
 .user-profile span:last-child {
-    max-width: 85px;
 
     overflow: hidden;
 
     text-overflow: ellipsis;
 
     white-space: nowrap;
+
 }
 
-.user-avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    width: 28px;
-    height: 28px;
+.user-avatar {
+
+    font-size: 18px;
 
     flex-shrink: 0;
-
-    border-radius: 50%;
-
-    background: #1e293b;
 }
 
 
@@ -179,7 +186,9 @@
 ========================================= */
 
 .login-link {
+
     color: #e2e8f0 !important;
+
 }
 
 
@@ -188,29 +197,24 @@
 ========================================= */
 
 .register-btn {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
 
-    padding: 9px 15px !important;
-
-    background: #22c55e !important;
+    background: #22c55e;
 
     color: white !important;
 
-    border-radius: 8px !important;
+    padding: 9px 14px !important;
 
-    font-weight: 700 !important;
+    border-radius: 8px;
 
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease !important;
 }
 
+
 .register-btn:hover {
+
     background: #16a34a !important;
 
-    transform: translateY(-1px) !important;
+    color: white !important;
+
 }
 
 
@@ -219,15 +223,16 @@
 ========================================= */
 
 .logout-btn {
+
     border: none;
-
-    padding: 9px 13px;
-
-    border-radius: 8px;
 
     background: #ef4444;
 
     color: white;
+
+    padding: 9px 14px;
+
+    border-radius: 8px;
 
     font-size: 14px;
 
@@ -237,15 +242,14 @@
 
     white-space: nowrap;
 
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+    transition: 0.25s ease;
 }
 
+
 .logout-btn:hover {
+
     background: #dc2626;
 
-    transform: translateY(-1px);
 }
 
 
@@ -254,10 +258,13 @@
 ========================================= */
 
 .burger {
+
     display: none;
 
-    width: 42px;
-    height: 42px;
+    width: 45px;
+    height: 45px;
+
+    margin-left: auto;
 
     padding: 8px;
 
@@ -267,34 +274,31 @@
 
     cursor: pointer;
 
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 5px;
+    flex-shrink: 0;
 }
 
+
 .burger span {
+
     display: block;
 
-    width: 24px;
-    height: 2px;
+    width: 30px;
+    height: 3px;
+
+    margin: 6px auto;
 
     background: white;
 
-    border-radius: 5px;
+    border-radius: 3px;
 
-    transition:
-        transform 0.25s ease,
-        opacity 0.25s ease;
+    transition: 0.3s ease;
 }
 
 
 /* Animation burger */
 
 .burger.open span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+    transform: translateY(9px) rotate(45deg);
 }
 
 .burger.open span:nth-child(2) {
@@ -302,7 +306,7 @@
 }
 
 .burger.open span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+    transform: translateY(-9px) rotate(-45deg);
 }
 
 
@@ -310,28 +314,27 @@
    TABLETTE
 ========================================= */
 
-@media (max-width: 1050px) {
+@media (max-width: 1100px) {
 
     .navbar {
-        padding: 0 20px;
+        padding: 0 25px;
     }
 
     .nav-links {
-        gap: 3px;
+        gap: 10px;
     }
 
-    .nav-links li > a {
-        padding: 8px 7px;
-
-        font-size: 13px;
+    .nav-links a {
+        font-size: 14px;
+        padding: 7px 4px;
     }
 
-    .register-btn {
-        padding: 8px 11px !important;
+    .logo-text {
+        font-size: 24px;
     }
 
-    .logout-btn {
-        padding: 8px 10px;
+    .logo-trophy {
+        font-size: 26px;
     }
 
 }
@@ -344,46 +347,65 @@
 @media (max-width: 768px) {
 
     .navbar {
-        height: 64px;
 
-        padding: 0 16px;
+        height: 75px;
+
+        padding: 0 18px;
+
     }
 
 
     .navbar-logo {
-        gap: 5px;
+
+        gap: 6px;
+
     }
 
 
     .logo-trophy {
-        font-size: 23px;
+
+        font-size: 28px;
+
     }
 
 
     .logo-text {
-        font-size: 21px;
+
+        font-size: 25px;
+
     }
 
 
-    /* Burger */
+    /* BURGER */
 
     .burger {
-        display: flex;
 
-        flex-shrink: 0;
+        display: block;
+
+        margin-left: auto;
+
+        margin-right: 0;
+
     }
 
 
-    /* Menu */
+    /* MENU MOBILE */
 
     .nav-links {
 
-        position: absolute;
+        position: fixed;
 
-        top: 64px;
+        top: 75px;
+
         left: 0;
 
         width: 100%;
+
+        height: auto;
+
+        padding: 20px;
+
+        margin: 0;
 
         display: none;
 
@@ -391,76 +413,71 @@
 
         align-items: stretch;
 
-        gap: 5px;
-
-        padding: 12px 15px 18px;
+        gap: 8px;
 
         background: #0f172a;
 
         border-top: 1px solid #1e293b;
 
-        box-shadow:
-            0 15px 30px
-            rgba(0, 0, 0, 0.35);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+
     }
 
 
     .nav-links.active {
+
         display: flex;
+
     }
 
 
     .nav-links li {
-        width: 100%;
-    }
-
-
-    .nav-links li > a {
 
         width: 100%;
 
-        justify-content: flex-start;
-
-        padding: 13px 15px;
-
-        font-size: 15px;
     }
 
 
-    .nav-links li > a:hover {
-        transform: none;
+    .nav-links a {
+
+        width: 100%;
+
+        padding: 14px;
+
+        border-radius: 8px;
+
+        font-size: 16px;
+
     }
 
 
-    /* Profil */
+    .nav-links a:hover {
+
+        background: #1e293b;
+
+    }
+
+
+    .register-btn {
+
+        justify-content: center;
+
+    }
+
+
+    .logout-btn {
+
+        width: 100%;
+
+        padding: 13px;
+
+    }
+
 
     .user-profile {
+
         max-width: none;
-    }
 
-
-    .user-profile span:last-child {
-        max-width: none;
-    }
-
-
-    /* Boutons */
-
-    .register-btn,
-    .logout-btn {
-
-        width: 100%;
-
-        padding: 12px !important;
-
-        justify-content: center !important;
-
-        text-align: center;
-    }
-
-
-    .logout-btn {
-        margin-top: 2px;
     }
 
 }
@@ -470,20 +487,44 @@
    PETITS TÉLÉPHONES
 ========================================= */
 
-@media (max-width: 400px) {
+@media (max-width: 430px) {
 
     .navbar {
-        padding: 0 12px;
+
+        padding: 0 14px;
+
     }
 
 
     .logo-text {
-        font-size: 20px;
+
+        font-size: 23px;
+
     }
 
 
     .logo-trophy {
-        font-size: 21px;
+
+        font-size: 25px;
+
+    }
+
+
+    .burger {
+
+        width: 42px;
+
+        height: 42px;
+
+        padding: 6px;
+
+    }
+
+
+    .burger span {
+
+        width: 28px;
+
     }
 
 }
