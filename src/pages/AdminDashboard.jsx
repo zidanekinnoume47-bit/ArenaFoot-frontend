@@ -5,203 +5,847 @@ import {
   deleteTournament,
   getRewards,
   sendReward,
-  getPayments
+  getPayments,
+  createTestPlayers
 } from "../service/adminService";
 
 import Sidebar from "../components/admin/Sidebar";
 import DashboardCards from "../components/admin/DashboardCards";
+
 import { Link } from "react-router-dom";
 
+import "../styles/admin.css";
+
 function AdminDashboard() {
+
   const [players, setPlayers] = useState([]);
   const [tournaments, setTournaments] = useState([]);
   const [rewards, setRewards] = useState([]);
   const [payments, setPayments] = useState([]);
+
   const [loadingMap, setLoadingMap] = useState({});
 
+
+  // ==========================================
+  // CHARGEMENT
+  // ==========================================
+
   const refreshAllData = async () => {
-    getPayments().then((data) => setPayments(Array.isArray(data) ? data : []));
-    getRewards().then((data) => setRewards(Array.isArray(data) ? data : []));
-    getPlayers().then((data) => setPlayers(Array.isArray(data) ? data : []));
-    getTournaments().then((data) => setTournaments(Array.isArray(data) ? data : []));
+
+    try {
+
+      const [
+        paymentsData,
+        rewardsData,
+        playersData,
+        tournamentsData
+      ] = await Promise.all([
+        getPayments(),
+        getRewards(),
+        getPlayers(),
+        getTournaments()
+      ]);
+
+
+      setPayments(
+        Array.isArray(paymentsData)
+          ? paymentsData
+          : []
+      );
+
+      setRewards(
+        Array.isArray(rewardsData)
+          ? rewardsData
+          : []
+      );
+
+      setPlayers(
+        Array.isArray(playersData)
+          ? playersData
+          : []
+      );
+
+      setTournaments(
+        Array.isArray(tournamentsData)
+          ? tournamentsData
+          : []
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Erreur chargement dashboard :",
+        error
+      );
+
+    }
+
   };
+
 
   useEffect(() => {
+
     refreshAllData();
+
   }, []);
 
+
+  // ==========================================
+  // SUPPRIMER TOURNOI
+  // ==========================================
+
   const handleDeleteTournament = async (id) => {
-    if (!window.confirm("Supprimer ce tournoi ?")) return;
-    const data = await deleteTournament(id);
-    alert(data.message);
-    const list = await getTournaments();
-    setTournaments(list);
-  };
 
-  const handleSendReward = async (id) => {
-    const data = await sendReward(id);
-    alert(data.message);
-    const list = await getRewards();
-    setRewards(list);
-  };
-
-  // FONCTION TEST : Déclencher l'ajout de 15 joueurs de test avec statut 'PAID'
-  const handleAdd15TestPlayers = async (tournamentId) => {
-    if (!window.confirm("Voulez-vous simuler l'ajout de 15 joueurs de test payés pour ce tournoi ?")) {
+    if (
+      !window.confirm(
+        "⚠️ Supprimer définitivement ce tournoi ?"
+      )
+    ) {
       return;
     }
 
-    setLoadingMap((prev) => ({ ...prev, [tournamentId]: true }));
 
     try {
-      // Remarque: Assurez-vous d'avoir exporté createTestPlayers dans adminService.js 
-      // ou effectuez le fetch direct comme suit :
-      const token = localStorage.getItem("token"); // Si vous utilisez un token JWT
-      const response = await fetch(`/api/admin/tournaments/${tournamentId}/test-players`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : ""
-        }
-      });
 
-      const data = await response.json();
+      const data =
+        await deleteTournament(id);
 
-      if (response.ok) {
-        alert("🎉 " + (data.message || "15 joueurs créés et marqués comme payés !"));
-        refreshAllData(); // Recharger les cartes, joueurs et paiements
-      } else {
-        alert("❌ Erreur : " + (data.error || data.message || "Impossible d'ajouter les joueurs."));
-      }
-    } catch (err) {
-      console.error("Erreur lors de la simulation :", err);
-      alert("❌ Une erreur est survenue lors de la simulation.");
-    } finally {
-      setLoadingMap((prev) => ({ ...prev, [tournamentId]: false }));
+      alert(data.message);
+
+      refreshAllData();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Impossible de supprimer le tournoi."
+      );
+
     }
+
   };
 
+
+  // ==========================================
+  // ENVOYER RÉCOMPENSE
+  // ==========================================
+
+  const handleSendReward = async (id) => {
+
+    try {
+
+      const data =
+        await sendReward(id);
+
+      alert(data.message);
+
+      refreshAllData();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Erreur lors de l'envoi."
+      );
+
+    }
+
+  };
+
+
+  // ==========================================
+  // JOUEURS TEST
+  // ==========================================
+
+  const handleAdd15TestPlayers = async (
+    tournamentId
+  ) => {
+
+    if (
+      !window.confirm(
+        "🧪 Ajouter 15 joueurs de test payés à ce tournoi ?"
+      )
+    ) {
+      return;
+    }
+
+
+    setLoadingMap((prev) => ({
+      ...prev,
+      [tournamentId]: true
+    }));
+
+
+    try {
+
+      const data =
+        await createTestPlayers(
+          tournamentId
+        );
+
+
+      if (data.message) {
+
+        alert(
+          "🎉 " + data.message
+        );
+
+      } else {
+
+        alert(
+          "Simulation terminée."
+        );
+
+      }
+
+
+      await refreshAllData();
+
+    } catch (error) {
+
+      console.error(
+        "Erreur simulation :",
+        error
+      );
+
+      alert(
+        "❌ Impossible d'ajouter les joueurs test."
+      );
+
+    } finally {
+
+      setLoadingMap((prev) => ({
+        ...prev,
+        [tournamentId]: false
+      }));
+
+    }
+
+  };
+
+
+  // ==========================================
+  // CALCULS
+  // ==========================================
+
+  const successfulPayments =
+    payments.filter(
+      payment =>
+        payment.status === "success"
+    );
+
+
+  const pendingRewards =
+    rewards.filter(
+      reward =>
+        reward.status === "waiting"
+    );
+
+
   return (
+
     <div className="admin-page">
+
       <Sidebar />
 
-<div className="admin-content">
-          <h1>👑 ArenaFoot Admin</h1>
+
+      <main className="admin-content">
+
+
+        {/* =====================================
+            HEADER
+        ===================================== */}
+
+        <section className="admin-dashboard-header">
+
+          <div>
+
+            <div className="admin-eyebrow">
+              <span></span>
+              CENTRE DE CONTRÔLE
+            </div>
+
+
+            <h1>
+              👑 Arena<span>Foot</span>
+            </h1>
+
+
+            <p>
+              Bienvenue dans votre espace
+              d'administration.
+            </p>
+
+          </div>
+
 
           <Link
-  to="/admin/create-tournament"
-  style={{
-    display: "inline-block",
-    marginBottom: "25px",
-    padding: "12px 20px",
-    background: "#2563EB",
-    color: "white",
-    textDecoration: "none",
-    borderRadius: "8px",
-    fontWeight: "bold"
-  }}
->
-  ➕ Créer un tournoi
-</Link>
-
-        <DashboardCards
-          players={players}
-          tournaments={tournaments}
-          payments={payments}
-        />
-
-        <h2>Joueurs</h2>
-        <p>Nombre de joueurs : {players.length}</p>
-
-        <h2>Tournois</h2>
-
-        {tournaments.map((t) => {
-          // Calcul du nombre de joueurs inscrits et payés pour ce tournoi
-          const tournamentPayments = payments.filter(
-            (p) => (p.tournament === t.name || p.tournament_id === t.id) && p.status === "success"
-          );
-const isFull = tournamentPayments.length >= (t.players_limit || 16);
-          return (
-            <div
-              key={t.id}
-              className={`tournament-admin-card ${isFull ? "tournament-full" : ""}`}
-            >
-            <div className="tournament-header">               
-              <h3>{t.name}</h3>
-                {isFull && (
-                <span className="full-badge">
-    FULL ({t.players_limit}/{t.players_limit})
-</span>
-                )}
-              </div>
-
-              <p>Participation : {t.entry_fee} FCFA</p>
-              <p>Récompense : {t.reward} FCFA</p>
-              <p className={`payment-count ${isFull ? "payment-full" : ""}`}>                
-Paiements validés : {tournamentPayments.length} / {t.players_limit || 16}
-              </p>
-
-              <div className="tournament-actions">                
-                <button>👥 Participants</button>
-                <button>🏆 Bracket</button>
-                <button>✏ Modifier</button>
-
-                {/* BOUTON DE TEST SIMULATION */}
-                <button
-                  onClick={() => handleAdd15TestPlayers(t.id)}
-                  disabled={loadingMap[t.id] || isFull}
-                  style={{
-                    backgroundColor: isFull ? "#cbd5e1" : "#8b5cf6",
-                    color: "white",
-                    border: "none",
-                    padding: "8px 12px",
-                    borderRadius: "4px",
-                    cursor: isFull ? "not-allowed" : "pointer",
-                    fontWeight: "bold"
-                  }}
-                >
-                  {loadingMap[t.id] ? "⏳ Inscription en cours..." : "🧪 Ajouter 15 Joueurs Test (Payés)"}
-                </button>
-
-                <button 
-                  onClick={() => handleDeleteTournament(t.id)}
-                  style={{ backgroundColor: "#dc2626", color: "white", border: "none", borderRadius: "4px", padding: "8px 12px" }}
-                >
-                  🗑 Supprimer
-                </button>
-              </div>
-            </div>
-          );
-        })}
-
-        <h2>🏆 Récompenses</h2>
-
-        {rewards.map((reward) => (
-          <div
-            key={reward.id}
-            style={{
-              border: "1px solid #ddd",
-              padding: "15px",
-              marginBottom: "10px",
-              borderRadius: "8px"
-            }}
+            to="/admin/create-tournament"
+            className="create-tournament-button"
           >
-            <p>👤 {reward.pseudo}</p>
-            <p>🏆 {reward.tournament}</p>
-            <p>💰 {reward.amount} FCFA</p>
-            <p>📱 {reward.phone}</p>
-            <p>📌 {reward.status}</p>
 
-            {reward.status === "waiting" && (
-              <button onClick={() => handleSendReward(reward.id)}>
-                📤 Envoyer
-              </button>
-            )}
+            <span>＋</span>
+
+            Créer un tournoi
+
+          </Link>
+
+        </section>
+
+
+
+        {/* =====================================
+            STATISTIQUES
+        ===================================== */}
+
+        <section className="dashboard-stats">
+
+          <DashboardCards
+            players={players}
+            tournaments={tournaments}
+            payments={payments}
+          />
+
+        </section>
+
+
+
+        {/* =====================================
+            ACTIVITÉ RAPIDE
+        ===================================== */}
+
+        <section className="admin-quick-stats">
+
+          <div className="quick-stat">
+
+            <div className="quick-stat-icon blue">
+              👥
+            </div>
+
+            <div>
+
+              <span>
+                Joueurs
+              </span>
+
+              <strong>
+                {players.length}
+              </strong>
+
+            </div>
+
           </div>
-        ))}
-      </div>
+
+
+          <div className="quick-stat">
+
+            <div className="quick-stat-icon green">
+              💳
+            </div>
+
+            <div>
+
+              <span>
+                Paiements validés
+              </span>
+
+              <strong>
+                {successfulPayments.length}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div className="quick-stat">
+
+            <div className="quick-stat-icon purple">
+              🏆
+            </div>
+
+            <div>
+
+              <span>
+                Tournois
+              </span>
+
+              <strong>
+                {tournaments.length}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div className="quick-stat">
+
+            <div className="quick-stat-icon orange">
+              🎁
+            </div>
+
+            <div>
+
+              <span>
+                Récompenses à envoyer
+              </span>
+
+              <strong>
+                {pendingRewards.length}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        {/* =====================================
+            TOURNOIS
+        ===================================== */}
+
+        <section className="admin-section">
+
+          <div className="section-heading">
+
+            <div>
+
+              <div className="section-kicker">
+                COMPÉTITIONS
+              </div>
+
+              <h2>
+                🏆 Tournois
+              </h2>
+
+            </div>
+
+
+            <Link
+              to="/admin/tournaments"
+              className="section-link"
+            >
+              Voir tous →
+            </Link>
+
+          </div>
+
+
+          <div className="admin-tournaments-grid">
+
+            {tournaments.length === 0 ? (
+
+              <div className="admin-empty">
+
+                <div>
+                  🏆
+                </div>
+
+                <h3>
+                  Aucun tournoi
+                </h3>
+
+                <p>
+                  Créez votre premier tournoi
+                  ArenaFoot.
+                </p>
+
+                <Link
+                  to="/admin/create-tournament"
+                  className="empty-button"
+                >
+                  Créer un tournoi
+                </Link>
+
+              </div>
+
+            ) : (
+
+              tournaments.map((tournament) => {
+
+                const limit =
+                  Number(
+                    tournament.players_limit
+                  ) || 16;
+
+
+                const tournamentPayments =
+                  payments.filter(
+                    payment =>
+                      (
+                        payment.tournament ===
+                        tournament.name
+                        ||
+                        Number(
+                          payment.tournament_id
+                        ) ===
+                        Number(
+                          tournament.id
+                        )
+                      )
+                      &&
+                      payment.status ===
+                      "success"
+                  );
+
+
+                const playerCount =
+                  tournamentPayments.length;
+
+
+                const percentage =
+                  Math.min(
+                    Math.round(
+                      (playerCount / limit) * 100
+                    ),
+                    100
+                  );
+
+
+                const isFull =
+                  playerCount >= limit;
+
+
+                return (
+
+                  <article
+                    key={tournament.id}
+                    className={
+                      `admin-tournament-card ${
+                        isFull
+                          ? "is-full"
+                          : ""
+                      }`
+                    }
+                  >
+
+
+                    {/* TOP */}
+
+                    <div className="tournament-card-top">
+
+                      <div className="tournament-game-icon">
+                        🎮
+                      </div>
+
+
+                      <div className="tournament-status">
+
+                        <span
+                          className={
+                            isFull
+                              ? "status-full"
+                              : "status-open"
+                          }
+                        >
+                          <i></i>
+
+                          {isFull
+                            ? "COMPLET"
+                            : "OUVERT"
+                          }
+
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+
+                    <h3>
+                      {tournament.name}
+                    </h3>
+
+
+                    <div className="tournament-info-grid">
+
+                      <div>
+
+                        <span>
+                          Participation
+                        </span>
+
+                        <strong>
+                          {tournament.entry_fee}
+                          <small>
+                            FCFA
+                          </small>
+                        </strong>
+
+                      </div>
+
+
+                      <div>
+
+                        <span>
+                          Récompense
+                        </span>
+
+                        <strong>
+                          {tournament.reward}
+                          <small>
+                            FCFA
+                          </small>
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+
+
+                    {/* PROGRESSION */}
+
+                    <div className="tournament-progress">
+
+                      <div className="progress-label">
+
+                        <span>
+                          Inscriptions
+                        </span>
+
+                        <strong>
+                          {playerCount}/{limit}
+                        </strong>
+
+                      </div>
+
+
+                      <div className="progress-track">
+
+                        <div
+                          className={
+                            `progress-fill ${
+                              isFull
+                                ? "full"
+                                : ""
+                            }`
+                          }
+                          style={{
+                            width:
+                              `${percentage}%`
+                          }}
+                        />
+
+                      </div>
+
+                    </div>
+
+
+
+                    {/* ACTIONS */}
+
+                    <div className="tournament-card-actions">
+
+                      <Link
+                        to="/admin/tournaments"
+                        className="action-primary"
+                      >
+                        Gérer
+                      </Link>
+
+
+                      <Link
+                        to={`/tournaments/${tournament.id}/bracket`}
+                        className="action-secondary"
+                      >
+                        🏆 Bracket
+                      </Link>
+
+                    </div>
+
+
+                    <div className="tournament-extra-actions">
+
+                      <button
+                        onClick={() =>
+                          handleAdd15TestPlayers(
+                            tournament.id
+                          )
+                        }
+                        disabled={
+                          loadingMap[
+                            tournament.id
+                          ] ||
+                          isFull
+                        }
+                        className="test-button"
+                      >
+
+                        {loadingMap[
+                          tournament.id
+                        ]
+                          ? "⏳ Ajout..."
+                          : "🧪 Joueurs test"
+                        }
+
+                      </button>
+
+
+                      <button
+                        onClick={() =>
+                          handleDeleteTournament(
+                            tournament.id
+                          )
+                        }
+                        className="delete-button"
+                      >
+                        🗑
+                      </button>
+
+                    </div>
+
+                  </article>
+
+                );
+
+              })
+
+            )}
+
+          </div>
+
+        </section>
+
+
+
+        {/* =====================================
+            RÉCOMPENSES
+        ===================================== */}
+
+        <section className="admin-section">
+
+          <div className="section-heading">
+
+            <div>
+
+              <div className="section-kicker">
+                PAIEMENTS
+              </div>
+
+              <h2>
+                🎁 Récompenses
+              </h2>
+
+            </div>
+
+
+            <Link
+              to="/admin/rewards"
+              className="section-link"
+            >
+              Voir toutes →
+            </Link>
+
+          </div>
+
+
+          <div className="rewards-grid">
+
+            {rewards.length === 0 ? (
+
+              <div className="admin-empty small">
+
+                <div>
+                  🎁
+                </div>
+
+                <p>
+                  Aucune récompense.
+                </p>
+
+              </div>
+
+            ) : (
+
+              rewards.map((reward) => (
+
+                <article
+                  key={reward.id}
+                  className="reward-card"
+                >
+
+                  <div className="reward-avatar">
+                    👤
+                  </div>
+
+
+                  <div className="reward-main">
+
+                    <strong>
+                      {reward.pseudo}
+                    </strong>
+
+                    <span>
+                      {reward.tournament}
+                    </span>
+
+                  </div>
+
+
+                  <div className="reward-amount">
+
+                    <strong>
+                      {reward.amount}
+                    </strong>
+
+                    <small>
+                      FCFA
+                    </small>
+
+                  </div>
+
+
+                  <div
+                    className={
+                      `reward-status ${
+                        reward.status
+                      }`
+                    }
+                  >
+                    {reward.status}
+                  </div>
+
+
+                  {reward.status ===
+                    "waiting" && (
+
+                    <button
+                      onClick={() =>
+                        handleSendReward(
+                          reward.id
+                        )
+                      }
+                      className="send-reward-button"
+                    >
+                      📤 Envoyer
+                    </button>
+
+                  )}
+
+                </article>
+
+              ))
+
+            )}
+
+          </div>
+
+        </section>
+
+
+      </main>
+
     </div>
+
   );
+
 }
 
 export default AdminDashboard;
