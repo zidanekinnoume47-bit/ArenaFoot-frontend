@@ -1,647 +1,293 @@
-/* =========================================
-   ARENAFOOT NAVBAR
-========================================= */
+/* ==============================
+   NAVBAR ARENAFOOT
+============================== */
+
+* {
+    box-sizing: border-box;
+}
 
 .navbar {
-
     position: fixed;
 
     top: 0;
     left: 0;
 
     width: 100%;
-    height: 76px;
-
-    padding: 0 50px;
+    height: 64px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
-    background:
-        rgba(2, 6, 23, .88);
+    padding: 0 25px;
 
-    backdrop-filter:
-        blur(18px);
+    background: #0f172a;
 
-    -webkit-backdrop-filter:
-        blur(18px);
-
-    border-bottom:
-        1px solid
-        rgba(148, 163, 184, .08);
-
-    box-shadow:
-        0 8px 30px
-        rgba(0, 0, 0, .25);
+    border-bottom: 1px solid #1e293b;
 
     z-index: 1000;
 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 }
 
 
-/* =========================================
+/* ==============================
    LOGO
-========================================= */
+============================== */
 
-.navbar-logo {
-
+.logo {
     display: flex;
 
     align-items: center;
 
-    gap: 9px;
+    flex-shrink: 0;
 
     color: white;
 
-    text-decoration: none;
+    font-size: 22px;
 
-    font-size: 25px;
+    font-weight: 800;
 
-    font-weight: 900;
+    white-space: nowrap;
+}
 
-    letter-spacing: -.5px;
+.logo span {
+    color: #22c55e;
 
-    transition:
-        transform .25s ease;
-
+    margin-left: 5px;
 }
 
 
-.navbar-logo:hover {
-
-    transform:
-        scale(1.03);
-
-}
-
-
-.logo-trophy {
-
-    font-size: 29px;
-
-    filter:
-        drop-shadow(
-            0 4px 8px
-            rgba(245, 158, 11, .25)
-        );
-
-}
-
-
-.logo-text span {
-
-    color: #3b82f6;
-
-}
-
-
-/* =========================================
-   NAV LINKS
-========================================= */
+/* ==============================
+   LIENS
+============================== */
 
 .nav-links {
-
     display: flex;
 
     align-items: center;
 
-    gap: 8px;
+    justify-content: flex-end;
+
+    gap: 18px;
 
     list-style: none;
 
     margin: 0;
+
     padding: 0;
-
 }
-
 
 .nav-links li {
+    margin: 0;
 
-    display: flex;
+    padding: 0;
 
-    align-items: center;
-
+    white-space: nowrap;
 }
 
-
 .nav-links a {
+    display: block;
 
-    position: relative;
+    padding: 8px 5px;
 
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    padding:
-        10px 13px;
-
-    color: #cbd5e1;
+    color: #e2e8f0;
 
     text-decoration: none;
 
-    font-size: 14px;
+    font-size: 15px;
 
-    font-weight: 700;
-
-    border-radius: 9px;
+    font-weight: 600;
 
     transition:
-        color .25s ease,
-        background .25s ease,
-        transform .25s ease;
-
+        color 0.2s ease,
+        transform 0.2s ease;
 }
-
 
 .nav-links a:hover {
+    color: #22c55e;
 
-    color: white;
-
-    background:
-        rgba(37, 99, 235, .10);
-
-    transform:
-        translateY(-1px);
-
+    transform: translateY(-1px);
 }
 
 
-.nav-links a span {
-
-    font-size: 16px;
-
-}
-
-
-/* =========================================
-   MON ESPACE
-========================================= */
-
-.dashboard-link {
-
-    color: #60a5fa !important;
-
-}
-
-
-/* =========================================
-   CONNEXION
-========================================= */
-
-.login-link {
-
-    border:
-        1px solid
-        rgba(148, 163, 184, .15);
-
-}
-
-
-/* =========================================
-   CRÉER UN COMPTE
-========================================= */
+/* ==============================
+   BOUTON INSCRIPTION
+============================== */
 
 .register-btn {
-
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #1d4ed8
-        );
+    background: #22c55e;
 
     color: white !important;
 
-    padding:
-        11px 18px !important;
+    padding: 9px 14px !important;
 
-    border-radius:
-        10px !important;
+    border-radius: 8px;
 
-    box-shadow:
-        0 7px 20px
-        rgba(37, 99, 235, .20);
-
+    font-weight: 700 !important;
 }
-
 
 .register-btn:hover {
+    background: #16a34a;
 
-    background:
-        linear-gradient(
-            135deg,
-            #3b82f6,
-            #2563eb
-        ) !important;
-
-    transform:
-        translateY(-2px) !important;
-
+    transform: none !important;
 }
 
 
-/* =========================================
-   UTILISATEUR CONNECTÉ
-========================================= */
-
-.user-profile {
-
-    background:
-        rgba(255, 255, 255, .04);
-
-    border:
-        1px solid
-        rgba(148, 163, 184, .08);
-
-}
-
-
-.user-avatar {
-
-    width: 27px;
-    height: 27px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        rgba(37, 99, 235, .15);
-
-}
-
-
-/* =========================================
-   DÉCONNEXION
-========================================= */
-
-.logout-btn {
-
-    border: none;
-
-    background:
-        transparent;
-
-    color: #f87171;
-
-    padding:
-        10px 13px;
-
-    border-radius:
-        9px;
-
-    font-size:
-        14px;
-
-    font-weight:
-        700;
-
-    cursor: pointer;
-
-    transition:
-        background .25s ease,
-        color .25s ease;
-
-}
-
-
-.logout-btn:hover {
-
-    background:
-        rgba(239, 68, 68, .10);
-
-    color:
-        #fca5a5;
-
-}
-
-
-/* =========================================
+/* ==============================
    BURGER
-========================================= */
+============================== */
 
 .burger {
-
     display: none;
-
-    width: 42px;
-    height: 42px;
-
-    padding: 8px;
 
     border: none;
 
-    background:
-        rgba(255,255,255,.05);
+    background: transparent;
 
-    border-radius:
-        10px;
+    color: white;
+
+    font-size: 27px;
 
     cursor: pointer;
 
-    flex-direction:
-        column;
-
-    justify-content:
-        center;
-
-    align-items:
-        center;
-
-    gap: 5px;
-
+    padding: 5px;
 }
 
 
-.burger span {
-
-    width: 22px;
-    height: 2px;
-
-    background:
-        white;
-
-    border-radius:
-        5px;
-
-    transition:
-        transform .3s ease,
-        opacity .3s ease;
-
-}
-
-
-/* Burger ouvert */
-
-.burger.open span:nth-child(1) {
-
-    transform:
-        translateY(7px)
-        rotate(45deg);
-
-}
-
-
-.burger.open span:nth-child(2) {
-
-    opacity: 0;
-
-}
-
-
-.burger.open span:nth-child(3) {
-
-    transform:
-        translateY(-7px)
-        rotate(-45deg);
-
-}
-
-
-/* =========================================
+/* ==============================
    TABLETTE
-========================================= */
+============================== */
 
-@media (max-width: 1000px) {
+@media (max-width: 900px) {
 
     .navbar {
-
-        padding:
-            0 25px;
-
+        padding: 0 18px;
     }
-
 
     .nav-links {
-
-        gap: 2px;
-
+        gap: 10px;
     }
 
-
     .nav-links a {
+        font-size: 14px;
+    }
 
-        padding:
-            9px 8px;
-
-        font-size:
-            13px;
-
+    .register-btn {
+        padding: 8px 11px !important;
     }
 
 }
 
 
-/* =========================================
+/* ==============================
    MOBILE
-========================================= */
+============================== */
 
 @media (max-width: 768px) {
 
     .navbar {
+        height: 64px;
 
-        height:
-            70px;
-
-        padding:
-            0 18px;
-
+        padding: 0 16px;
     }
 
 
-    .navbar-logo {
-
-        font-size:
-            22px;
-
+    .logo {
+        font-size: 21px;
     }
 
-
-    .logo-trophy {
-
-        font-size:
-            25px;
-
-    }
-
-
-    /* Burger */
 
     .burger {
-
-        display:
-            flex;
-
+        display: block;
     }
 
-
-    /* Menu */
 
     .nav-links {
 
-        position:
-            fixed;
+        position: absolute;
 
-        top:
-            70px;
+        top: 64px;
 
-        left:
-            0;
+        left: 0;
 
-        width:
-            100%;
+        width: 100%;
 
-        padding:
-            18px;
+        display: none;
 
-        display:
-            none;
+        flex-direction: column;
 
-        flex-direction:
-            column;
+        align-items: stretch;
 
-        align-items:
-            stretch;
+        gap: 0;
 
-        gap:
-            8px;
+        padding: 10px 15px 15px;
 
-        background:
-            rgba(2, 6, 23, .97);
+        background: #0f172a;
 
-        backdrop-filter:
-            blur(20px);
-
-        border-bottom:
-            1px solid
-            rgba(148, 163, 184, .1);
+        border-top: 1px solid #1e293b;
 
         box-shadow:
-            0 15px 35px
-            rgba(0,0,0,.3);
-
+            0 10px 20px
+            rgba(0, 0, 0, 0.3);
     }
 
 
     .nav-links.active {
-
-        display:
-            flex;
-
-        animation:
-            mobileMenu .25s ease both;
-
-    }
-
-
-    @keyframes mobileMenu {
-
-        from {
-
-            opacity: 0;
-
-            transform:
-                translateY(-10px);
-
-        }
-
-        to {
-
-            opacity: 1;
-
-            transform:
-                translateY(0);
-
-        }
-
+        display: flex;
     }
 
 
     .nav-links li {
-
-        width:
-            100%;
-
+        width: 100%;
     }
 
 
     .nav-links a {
+        width: 100%;
 
-        width:
-            100%;
+        padding: 12px 15px;
 
-        padding:
-            14px;
+        text-align: left;
 
-        justify-content:
-            flex-start;
+        font-size: 15px;
 
-        font-size:
-            15px;
+        border-radius: 8px;
+    }
 
-        background:
-            rgba(255,255,255,.025);
 
+    .nav-links a:hover {
+        background: #1e293b;
+
+        transform: none;
     }
 
 
     .register-btn {
+        margin-top: 5px;
 
-        justify-content:
-            center !important;
-
-        margin-top:
-            5px;
-
-    }
-
-
-    .logout-btn {
-
-        width:
-            100%;
-
-        padding:
-            14px;
-
-        text-align:
-            left;
-
-        background:
-            rgba(239,68,68,.05);
-
+        text-align: center !important;
     }
 
 }
 
 
-/* =========================================
-   PETIT MOBILE
-========================================= */
+/* ==============================
+   PETITS TÉLÉPHONES
+============================== */
 
 @media (max-width: 400px) {
 
     .navbar {
-
-        padding:
-            0 13px;
-
+        padding: 0 12px;
     }
 
+    .logo {
+        font-size: 19px;
+    }
 
-    .navbar-logo {
-
-        font-size:
-            20px;
-
+    .burger {
+        font-size: 25px;
     }
 
 }
