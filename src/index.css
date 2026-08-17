@@ -7,3 +7,30 @@ html, body, #root {
 body{
     overflow-y:auto;
 }
+/* =========================================
+   RESET GLOBAL ARENAFOOT
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: #020617;
+}
+
+body {
+    background: #020617;
+    overflow-x: hidden;
+}
