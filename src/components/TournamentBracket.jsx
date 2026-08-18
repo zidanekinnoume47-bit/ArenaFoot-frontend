@@ -7,9 +7,15 @@ function TournamentBracket() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+ useEffect(() => {
+  fetchBracketData();
+
+  const interval = setInterval(() => {
     fetchBracketData();
-  }, [id]);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, [id]);
 
   const fetchBracketData = async () => {
     try {
@@ -46,8 +52,15 @@ function TournamentBracket() {
 
   // Rendu de chaque carte de match
   const renderMatchCard = (match, index) => {
-    const p1 = match.player_one_pseudo || "Ã dÃ©terminer";
-    const p2 = match.player_two_pseudo || "Ã dÃ©terminer";
+    const p1 =
+  match.player_one_pseudo ||
+  match.player_one_name ||
+  "À déterminer";
+
+const p2 =
+  match.player_two_pseudo ||
+  match.player_two_name ||
+  "À déterminer";
     const isFinished = match.status === "completed" || match.status === "finished";
 
     return (
@@ -63,9 +76,22 @@ function TournamentBracket() {
           transition: "all 0.2s ease"
         }}
       >
-        <div style={{ fontSize: "0.75rem", color: "#94a3b8", marginBottom: "8px", textTransform: "uppercase", fontWeight: "bold" }}>
-          Match #{index + 1} â¢ {match.status === "pending" ? "â³ En attente" : "ð® TerminÃ©"}
-        </div>
+        <div
+  style={{
+    fontSize: "0.75rem",
+    color: "#94a3b8",
+    marginBottom: "8px",
+    textTransform: "uppercase",
+    fontWeight: "bold"
+  }}
+>
+  Match #{match.id} •{" "}
+  {match.status === "pending"
+    ? "⏳ En attente"
+    : match.status === "finished" || match.status === "completed"
+    ? "🎮 Terminé"
+    : "📌 En attente"}
+</div>
 
         {/* Joueur 1 */}
         <div
