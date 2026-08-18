@@ -204,8 +204,7 @@ function AdminTournaments() {
 
     if (
       !window.confirm(
-        "Simuler l'ajout de 15 joueurs test payés ?"
-      )
+"Simuler l'ajout des joueurs test payés pour remplir ce tournoi ?"      )
     ) {
       return;
     }
@@ -815,8 +814,7 @@ function AdminTournaments() {
                           loadingTournamentId ===
                           tournament.id
                             ? "⏳..."
-                            : "🧪 +15 Test"
-                        }
+                            : `🧪 +${tournament.players_limit || 16} Test`                        }
                       </button>
 
 
