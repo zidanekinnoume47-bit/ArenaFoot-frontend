@@ -154,7 +154,8 @@ function Dashboard() {
           {availableTournaments.length > 0 ? (
             availableTournaments.map((tournament) => {
               const playersCount = Number(tournament.players_count) || 0;
-              const isFull = playersCount >= 16;
+              const playersLimit = Number(tournament.players_limit) || 16;
+              const isFull = playersCount >= playersLimit;
 
               return (
                 <div
@@ -169,7 +170,7 @@ function Dashboard() {
                   <p>💰 Participation : {tournament.entry_fee} FCFA</p>
                   <p>🎁 Récompense : {tournament.reward} FCFA</p>
                   <p style={{ fontWeight: "bold", color: isFull ? "red" : "inherit" }}>
-                    👥 Places : {playersCount}/16
+                    👥 Places : {playersCount}/{playersLimit}
                   </p>
 
                   {/* VÉRIFICATION : Si le tournoi est complet (16/16), masquer le bouton */}
