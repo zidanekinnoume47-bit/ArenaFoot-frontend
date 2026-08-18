@@ -1207,14 +1207,14 @@ function AdminTournaments() {
 
                               <span>
                                 {
-                                  match.player_one_pseudo ||
+                                  match.player_one_name ||
                                   "En attente"
                                 }
                               </span>
 
                               <strong>
                                 {
-                                  match.player_one_pseudo
+                                  match.player_one_name
                                     ? "?"
                                     : "-"
                                 }
@@ -1232,14 +1232,14 @@ function AdminTournaments() {
 
                               <span>
                                 {
-                                  match.player_two_pseudo ||
+                                  match.player_two_name ||
                                   "En attente"
                                 }
                               </span>
 
                               <strong>
                                 {
-                                  match.player_two_pseudo
+                                  match.player_two_name
                                     ? "?"
                                     : "-"
                                 }
