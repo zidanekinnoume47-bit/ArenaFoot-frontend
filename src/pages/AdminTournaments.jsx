@@ -717,33 +717,26 @@ function AdminTournaments() {
 
                       </div>
 
+<div className="tournament-progress">
 
-                      <div className="tournament-progress">
+  <span
+    style={{
+      width: `${
+        Math.min(
+          100,
+          (
+            (
+              isSelected && viewMode === "players"
+                ? players.length
+                : Number(tournament.players_count || 0)
+            ) / limit
+          ) * 100
+        )
+      }%`
+    }}
+  />
 
-                        <span
-                          style={{
-                            width:
-                              `${
-                                Math.min(
-                                  100,
-                                  (
-                                    (
-                                      isSelected &&
-                                      viewMode ===
-                                        "players"
-                                    )
-                                      ? players.length
-                                      : tournament.players_count ||
-                                        0
-                                  ) /
-                                  limit *
-                                  100
-                                )
-                              }%`
-                          }}
-                        />
-
-                      </div>
+</div>
 
                     </div>
 
