@@ -6,12 +6,11 @@ function TournamentCard({ tournament }) {
 
     const navigate = useNavigate();
 
-    const [playerCount] = useState(
-        tournament.players_count || 0
-    );
+    const playerCount =
+    Number(tournament.players_count) || 0;
 
-    const playersLimit =
-        tournament.players_limit || 16;
+   const playersLimit =
+    Number(tournament.players_limit);
 
     const progress =
         Math.min(
