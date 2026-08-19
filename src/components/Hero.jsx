@@ -22,7 +22,7 @@ function Hero() {
       <div className="hero-content">
 
         <div className="hero-badge">
-          🏆 TOURNOIS eFOOTBALL
+          🏆 TOURNOIS eFOOTBALL / Call of Duty
         </div>
 
         <h1>
