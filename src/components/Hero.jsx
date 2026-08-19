@@ -1,5 +1,5 @@
 import React from "react";
-import heroImage from "../assets/hero-efootball.jpeg";
+import heroImage from "../assets/hero-efootball.jpg";
 import { Link } from "react-router-dom";
 import "../styles/hero.css";
 
