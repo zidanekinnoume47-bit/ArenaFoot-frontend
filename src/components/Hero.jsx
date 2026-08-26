@@ -21,13 +21,10 @@ function Hero() {
       {/* CONTENU */}
       <div className="hero-content">
 
-        {/* BADGE */}
         <div className="hero-badge">
-          <i className="bi bi-trophy-fill"></i>
-          TOURNOIS eFOOTBALL / Call of Duty
+          🏆 TOURNOIS eFOOTBALL / Call of Duty
         </div>
 
-        {/* TITRE */}
         <h1>
           Le terrain virtuel.
           <br />
@@ -35,69 +32,50 @@ function Hero() {
           <span>La vraie compétition.</span>
         </h1>
 
-        {/* DESCRIPTION */}
         <p>
           Affronte des joueurs, participe à des tournois eFootball
           et bats-toi pour atteindre le sommet.
         </p>
 
-        {/* BOUTONS */}
         <div className="hero-buttons">
 
           <Link
             to="/register"
             className="btn-primary"
           >
-            <i className="bi bi-rocket-takeoff-fill"></i>
-            Créer un compte
+            🚀 Créer un compte
           </Link>
 
           <Link
             to="/tournaments"
             className="btn-secondary"
           >
-            <i className="bi bi-controller"></i>
-            Voir les tournois
+            🎮 Voir les tournois
           </Link>
 
         </div>
 
-        {/* INFORMATIONS */}
         <div className="hero-info">
 
           <div>
-            <strong>
-              <i className="bi bi-controller"></i>
-            </strong>
-
-            <span>
-              eFootball
-            </span>
+            <strong>🎮</strong>
+            <span>eFootball</span>
           </div>
 
           <div>
-            <strong>
-              <i className="bi bi-people-fill"></i>
-            </strong>
-
-            <span>
-              Joueurs
-            </span>
+            <strong>👥</strong>
+            <span>16 joueurs</span>
           </div>
 
           <div>
-            <strong>
-              <i className="bi bi-award-fill"></i>
-            </strong>
-
-            <span>
-              Récompenses
-            </span>
+            <strong>🏆</strong>
+            <span>Récompenses</span>
           </div>
 
         </div>
 
       </div>
+
 
       {/* IMAGE */}
       <div className="hero-image-container">
@@ -108,24 +86,21 @@ function Hero() {
 
           <img
             src={heroImage}
-            alt="ArenaFoot eFootball et Call of Duty"
+            alt="ArenaFoot eFootball"
           />
 
           <div className="image-overlay"></div>
 
         </div>
 
-        {/* BADGE FLOTTANT */}
+        {/* Badge flottant */}
         <div className="floating-card">
 
           <span className="live-dot"></span>
 
           <div>
             <strong>ARENAFOOT</strong>
-
-            <small>
-              Entre dans l'arène
-            </small>
+            <small>Entre dans l'arène</small>
           </div>
 
         </div>
